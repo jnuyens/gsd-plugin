@@ -60,9 +60,10 @@ None — v1.0 shipped cleanly.
 |---|-------------|------|--------|-----------|
 | 260407-1up | Sync full GSD 1.32.0 base tree into plugin layout and reapply Phase 3 improvements | 2026-04-06 | 3d0c1cc | [260407-1up-update-gsd-base-tree-to-latest-version-a](./quick/260407-1up-update-gsd-base-tree-to-latest-version-a/) |
 | 260407-2rh | Add GSD 1.32.0 base version to README header | 2026-04-06 | ba0b3c0 | [260407-2rh-add-gsd-base-version-to-readme](./quick/260407-2rh-add-gsd-base-version-to-readme/) |
+| 260407-4gi | Add scheduled task to check for new upstream GSD releases | 2026-04-07 | — | [260407-4gi-add-scheduled-task-to-check-for-new-upst](./quick/260407-4gi-add-scheduled-task-to-check-for-new-upst/) |
 
 ## Session Continuity
 
-Last session: 2026-04-06
+Last session: 2026-04-07
 Stopped at: v1.0 milestone completed
 Resume file: None
