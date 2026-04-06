@@ -1,8 +1,10 @@
 # GSD Plugin -- Get Shit Done for Claude Code
 
+**Based on:** [GSD 1.32.0](https://github.com/gsd-build/get-shit-done/releases) base tree by **TACHES** (Lex Christopherson)
+
 A performance-optimized plugin packaging of [GSD](https://github.com/gsd-build/get-shit-done) for Claude Code. Reduces per-turn token overhead by ~92%, adds MCP-backed project state, and bundles everything into a single-install plugin.
 
-Based on [Get Shit Done](https://github.com/gsd-build/get-shit-done) by **TACHES** (Lex Christopherson). This project repackages the GSD workflow system as a native Claude Code plugin with additional optimizations: skill isolation via `context: fork`, structured MCP tools replacing prompt injection, and cross-session memory via memdir.
+This project repackages the GSD workflow system as a native Claude Code plugin with additional optimizations: skill isolation via `context: fork`, structured MCP tools replacing prompt injection, and cross-session memory via memdir.
 
 ## Installation
 
