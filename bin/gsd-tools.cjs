@@ -961,6 +961,16 @@ async function runCommand(command, args, cwd, raw) {
       break;
     }
 
+    // ─── Legacy Migration ─────────────────────────────────────────────────
+
+    case 'migrate': {
+      const legacyCleanup = require('../migrations/legacy-cleanup.cjs');
+      legacyCleanup.main().catch((err) => {
+        error(`Migration failed: ${err.message}`);
+      });
+      break;
+    }
+
     // ─── Documentation ────────────────────────────────────────────────────
 
     case 'docs-init': {
