@@ -17,9 +17,9 @@
 
 ### MCP Server
 
-- [ ] **MCP-01**: GSD MCP server exposes project state (phase, requirements, roadmap, config) as MCP resources
+- [x] **MCP-01**: GSD MCP server exposes project state (phase, requirements, roadmap, config) as MCP resources
 - [ ] **MCP-02**: GSD operations available as structured MCP tools replacing prompt-injected orchestration context
-- [ ] **MCP-03**: MCP server auto-starts when GSD project detected (`.planning/` directory exists)
+- [x] **MCP-03**: MCP server auto-starts when GSD project detected (`.planning/` directory exists)
 
 ### Memory Integration
 
@@ -61,9 +61,9 @@
 | SKILL-02 | Phase 1 | Complete |
 | AGENT-01 | Phase 1 | Complete |
 | AGENT-02 | Phase 1 | Complete |
-| MCP-01 | Phase 2 | Pending |
+| MCP-01 | Phase 2 | Complete |
 | MCP-02 | Phase 2 | Pending |
-| MCP-03 | Phase 2 | Pending |
+| MCP-03 | Phase 2 | Complete |
 | MEM-01 | Phase 3 | Pending |
 | MEM-02 | Phase 3 | Pending |
 | PLUG-01 | Phase 3 | Pending |

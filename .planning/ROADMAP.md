@@ -12,7 +12,7 @@ Transform GSD from a prompt-injection-heavy orchestration layer into a lean, ext
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Skill and Agent Optimization** - Refactor GSD skills with fork-mode frontmatter and extract agent types into dedicated definition files
+- [x] **Phase 1: Skill and Agent Optimization** - Refactor GSD skills with fork-mode frontmatter and extract agent types into dedicated definition files
 - [ ] **Phase 2: MCP Server** - Build GSD MCP server exposing project state and operations as structured tools replacing prompt injection
 - [ ] **Phase 3: Plugin Packaging and Memory** - Bundle skills, agents, and MCP server into a single-install plugin with cross-session memory via memdir
 
@@ -43,7 +43,11 @@ Plans:
   2. GSD workflow operations (init, plan, execute, read-state, transition, verify) are callable as structured MCP tools with typed Zod schemas
   3. The MCP server auto-starts when a `.planning/` directory is detected in the project, without manual configuration
   4. GSD commands work through hybrid invocation: slash command triggers MCP tool call instead of BashTool-to-CLI roundtrip
-**Plans**: TBD
+**Plans:** 2 plans
+
+Plans:
+- [x] 02-01-PLAN.md -- MCP server foundation with stdio transport and read-only resources
+- [ ] 02-02-PLAN.md -- MCP workflow tools and new-project integration
 
 ### Phase 3: Plugin Packaging and Memory
 **Goal**: GSD installs in a single step via plugin manifest and persists decisions and context across sessions through Claude Code's memory system
@@ -63,6 +67,6 @@ Phases execute in numeric order: 1 -> 2 -> 3
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Skill and Agent Optimization | 0/3 | Planning complete | - |
-| 2. MCP Server | 0/0 | Not started | - |
+| 1. Skill and Agent Optimization | 3/3 | Complete | 2026-04-01 |
+| 2. MCP Server | 0/2 | Planning complete | - |
 | 3. Plugin Packaging and Memory | 0/0 | Not started | - |
