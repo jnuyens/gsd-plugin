@@ -13,7 +13,7 @@ This command is deprecated. GSD is now distributed as a Claude Code plugin and u
 
 - **Plugin-managed updates** replace the npm-based update flow
 - **`claude plugin install gsd`** is the single install and update command
-- **`get-shit-done-cc`** npm package is no longer the distribution path
+- The legacy npm installer package is no longer the distribution path
 
 ## How to update GSD
 
@@ -26,14 +26,8 @@ Claude Code's plugin system handles versioning, caching, and updates automatical
 
 ## Migration from legacy install
 
-If you still have a legacy `~/.claude/get-shit-done/` installation:
-
-1. Install the plugin: `claude plugin install gsd`
-2. Remove the legacy directory: `rm -rf ~/.claude/get-shit-done/`
-3. Remove GSD entries from `~/.claude/settings.json` (hook entries pointing at old scripts)
-4. Remove GSD entries from project `.mcp.json` files
-
-See `README.md` for full migration guidance.
+If you have a legacy GSD installation, see `README.md` for complete migration steps
+including cleanup of old directories, hook entries, and MCP configuration.
 </objective>
 
 <success_criteria>

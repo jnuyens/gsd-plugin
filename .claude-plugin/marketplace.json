@@ -8,12 +8,7 @@
       },
       "description": "Get Shit Done -- structured workflow plugin for Claude Code with planning, execution, verification, and MCP-backed project state",
       "category": "productivity",
-      "install_command": "claude plugin install gsd",
-      "replaces": {
-        "npm_package": "get-shit-done-cc",
-        "legacy_update_command": "/gsd:update",
-        "legacy_install_path": "~/.claude/get-shit-done"
-      }
+      "install_command": "claude plugin install gsd"
     }
   ]
 }

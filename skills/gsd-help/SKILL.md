@@ -34,10 +34,10 @@ Display the complete GSD command reference. Output ONLY the reference content. D
 
 ## Staying Updated
 
-GSD evolves fast. Update periodically:
+GSD is distributed as a Claude Code plugin. Updates are managed automatically:
 
 ```bash
-npx get-shit-done-cc@latest
+claude plugin install gsd
 ```
 
 ## Core Workflow
@@ -473,9 +473,9 @@ Update GSD to latest version with changelog preview.
 - Displays changelog entries for versions you've missed
 - Highlights breaking changes
 - Confirms before running install
-- Better than raw `npx get-shit-done-cc`
+- DEPRECATED: plugin-managed updates replace this command
 
-Usage: `/gsd-update`
+Usage: `/gsd-update` (deprecated -- use `claude plugin install gsd` instead)
 
 **`/gsd-join-discord`**
 Join the GSD Discord community.
