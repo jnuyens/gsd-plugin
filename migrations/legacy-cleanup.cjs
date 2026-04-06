@@ -47,6 +47,10 @@ const LEGACY_PATHS = {
     'gsd-context-monitor.js',
     'gsd-prompt-guard.js',
     'gsd-statusline.js',
+    'gsd-read-guard.js',
+    'gsd-session-state.sh',
+    'gsd-phase-boundary.sh',
+    'gsd-validate-commit.sh',
   ],
 };
 
@@ -98,6 +102,30 @@ function auditMcpJson(cwd) {
   return results;
 }
 
+/**
+ * Check if a command string references a legacy GSD script.
+ */
+function isLegacyGsdHookCommand(cmd) {
+  return cmd.includes('gsd-') || cmd.includes('get-shit-done');
+}
+
+/**
+ * Extract all commands from a hook group.
+ * Handles both flat format ({ command }) and nested format ({ hooks: [{ command }] }).
+ */
+function extractHookCommands(group) {
+  const cmds = [];
+  // Nested format: { hooks: [{ type, command }], matcher? }
+  if (Array.isArray(group.hooks)) {
+    for (const h of group.hooks) {
+      if (h.command) cmds.push(h.command);
+    }
+  }
+  // Flat format: { command }
+  if (group.command) cmds.push(group.command);
+  return cmds;
+}
+
 function auditSettingsJson() {
   const results = [];
   if (!fs.existsSync(LEGACY_PATHS.settingsJson)) return results;
@@ -107,18 +135,20 @@ function auditSettingsJson() {
 
     // Check for hook entries referencing legacy GSD scripts
     const hooks = content.hooks || {};
-    for (const [event, handlers] of Object.entries(hooks)) {
-      if (!Array.isArray(handlers)) continue;
-      for (const handler of handlers) {
-        const cmd = handler.command || '';
-        if (cmd.includes('gsd-') || cmd.includes('get-shit-done')) {
-          results.push({
-            found: true,
-            path: LEGACY_PATHS.settingsJson,
-            event,
-            command: cmd,
-            details: `Hook "${event}" references legacy GSD script: ${cmd}`,
-          });
+    for (const [event, groups] of Object.entries(hooks)) {
+      if (!Array.isArray(groups)) continue;
+      for (const group of groups) {
+        const cmds = extractHookCommands(group);
+        for (const cmd of cmds) {
+          if (isLegacyGsdHookCommand(cmd)) {
+            results.push({
+              found: true,
+              path: LEGACY_PATHS.settingsJson,
+              event,
+              command: cmd,
+              details: `Hook "${event}" references legacy GSD script: ${cmd}`,
+            });
+          }
         }
       }
     }
@@ -314,12 +344,17 @@ async function cleanSettingsHooks() {
     const hooks = content.hooks || {};
     let changed = false;
 
-    for (const [event, handlers] of Object.entries(hooks)) {
-      if (!Array.isArray(handlers)) continue;
-      const filtered = handlers.filter((h) => {
-        const cmd = h.command || '';
-        if (cmd.includes('gsd-') || cmd.includes('get-shit-done')) {
-          console.log(`  Removing hook: "${event}" -> ${cmd}`);
+    for (const [event, groups] of Object.entries(hooks)) {
+      if (!Array.isArray(groups)) continue;
+      const filtered = groups.filter((group) => {
+        const cmds = extractHookCommands(group);
+        const hasLegacy = cmds.some(isLegacyGsdHookCommand);
+        if (hasLegacy) {
+          for (const cmd of cmds) {
+            if (isLegacyGsdHookCommand(cmd)) {
+              console.log(`  Removing hook: "${event}" -> ${cmd}`);
+            }
+          }
           changed = true;
           return false;
         }
@@ -591,12 +626,17 @@ function autoMigrate(cwd) {
         const hooks = content.hooks || {};
         let changed = false;
 
-        for (const [event, handlers] of Object.entries(hooks)) {
-          if (!Array.isArray(handlers)) continue;
-          const filtered = handlers.filter((h) => {
-            const cmd = h.command || '';
-            if (cmd.includes('gsd-') || cmd.includes('get-shit-done')) {
-              actions.push(`Removed legacy hook "${event}" from settings.json`);
+        for (const [event, groups] of Object.entries(hooks)) {
+          if (!Array.isArray(groups)) continue;
+          const filtered = groups.filter((group) => {
+            const cmds = extractHookCommands(group);
+            const hasLegacy = cmds.some(isLegacyGsdHookCommand);
+            if (hasLegacy) {
+              for (const cmd of cmds) {
+                if (isLegacyGsdHookCommand(cmd)) {
+                  actions.push(`Removed legacy hook "${event}" -> ${cmd}`);
+                }
+              }
               changed = true;
               return false;
             }
