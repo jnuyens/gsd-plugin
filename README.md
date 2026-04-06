@@ -131,19 +131,20 @@ claude plugin marketplace update gsd-plugin
 
 ## Migrating from legacy install
 
-If you previously installed GSD via `get-shit-done-cc` or manual setup, follow these steps to migrate to the plugin-based install.
+If you previously installed GSD via `get-shit-done-cc` or manual setup, most migration happens automatically.
 
-### What the plugin replaces
+### What happens automatically
 
-| Legacy component | Plugin replacement |
-|---|---|
-| `~/.claude/get-shit-done/` directory | Plugin cache at `~/.claude/plugins/cache/` (managed automatically) |
-| `get-shit-done-cc` npm package | `claude plugin install gsd@gsd-plugin` |
-| `/gsd:update` command | Plugin-managed updates (command is now deprecated) |
-| Manual `.mcp.json` entries pointing at `~/.claude/get-shit-done/mcp/server.cjs` | Plugin manifest declares MCP server automatically |
-| Manual `~/.claude/settings.json` hook entries | Plugin-packaged `hooks/hooks.json` auto-loaded by plugin loader |
+On your first session after installing the plugin, GSD auto-migrates:
 
-### Migration steps
+- **Moves** `~/.claude/get-shit-done/` to `~/.claude/get-shit-done-legacy/` (safe backup, not deleted)
+- **Removes** legacy GSD MCP server entries from your project's `.mcp.json`
+- **Removes** legacy GSD hook entries from `~/.claude/settings.json`
+- **Removes** legacy hook scripts (`gsd-check-update.js`, `gsd-context-monitor.js`, `gsd-prompt-guard.js`, `gsd-statusline.js`) from `~/.claude/hooks/`
+
+You'll see a summary of what was migrated in the session output.
+
+### What you still need to do manually
 
 #### 1. Install the plugin
 
@@ -152,57 +153,25 @@ claude plugin marketplace add jnuyens/gsd-plugin
 claude plugin install gsd@gsd-plugin
 ```
 
-#### 2. Remove legacy `~/.claude/get-shit-done/` directory
-
-The legacy install directory is no longer needed. The plugin bundles all skills, agents, templates, references, and bin tools.
-
-```bash
-rm -rf ~/.claude/get-shit-done/
-```
-
-#### 3. Remove GSD entries from `.mcp.json`
-
-If your project has a `.mcp.json` file with a GSD MCP server entry pointing at the legacy path, remove it. The plugin manifest now declares the MCP server.
-
-Look for and remove entries like:
-
-```json
-{
-  "mcpServers": {
-    "gsd": {
-      "command": "node",
-      "args": ["/Users/.../.claude/get-shit-done/mcp/server.cjs"]
-    }
-  }
-}
-```
-
-#### 4. Remove GSD hook entries from `~/.claude/settings.json`
-
-If your `~/.claude/settings.json` contains hook entries referencing old GSD scripts (e.g., `gsd-check-update.js`, `gsd-context-monitor.js`, `gsd-prompt-guard.js`, `gsd-statusline.js` from `~/.claude/hooks/`), remove those entries. The plugin provides equivalent hooks via `hooks/hooks.json`.
-
-#### 5. Remove legacy hook scripts
-
-```bash
-rm -f ~/.claude/hooks/gsd-check-update.js
-rm -f ~/.claude/hooks/gsd-context-monitor.js
-rm -f ~/.claude/hooks/gsd-prompt-guard.js
-rm -f ~/.claude/hooks/gsd-statusline.js
-```
-
-#### 6. Uninstall `get-shit-done-cc` npm package (if installed)
+#### 2. Uninstall `get-shit-done-cc` npm package (if installed)
 
 ```bash
 npm uninstall -g get-shit-done-cc
 ```
 
-#### 7. Stop using `/gsd:update`
+#### 3. Stop using `/gsd:update`
 
 The `/gsd:update` command is deprecated. Use `claude plugin marketplace update gsd-plugin` to update.
 
-### Automated migration audit
+#### 4. Clean up the backup (optional, after verifying the plugin works)
 
-GSD includes a migration helper that audits your system for legacy paths:
+```bash
+rm -rf ~/.claude/get-shit-done-legacy/
+```
+
+### Manual migration audit
+
+To check for any remaining legacy artifacts:
 
 ```bash
 node bin/gsd-tools.cjs migrate

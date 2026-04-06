@@ -954,6 +954,29 @@ async function runCommand(command, args, cwd, raw) {
       break;
     }
 
+    // ─── Hooks ─────────────────────────────────────────────────────────
+
+    case 'hook': {
+      const hookType = args[0]; // session-start, pre-tool-use, post-tool-use
+      if (hookType === 'session-start') {
+        // Auto-migrate legacy artifacts on first session
+        try {
+          const migrationPath = path.join(__dirname, '..', 'migrations', 'legacy-cleanup.cjs');
+          if (fs.existsSync(migrationPath)) {
+            const { autoMigrate } = require(migrationPath);
+            const result = autoMigrate(cwd);
+            if (result.migrated) {
+              // Output as hook message so user sees what happened
+              const msg = ['GSD plugin: auto-migrated legacy install:', ...result.actions.map(a => `  - ${a}`)].join('\n');
+              process.stderr.write(msg + '\n');
+            }
+          }
+        } catch { /* never break session start */ }
+      }
+      // pre-tool-use and post-tool-use: no-op for now
+      break;
+    }
+
     // ─── Migration ───────────────────────────────────────────────────
 
     case 'migrate': {
