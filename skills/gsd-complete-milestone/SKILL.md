@@ -425,6 +425,32 @@ After archival, the AI still handles:
 
 </step>
 
+<step name="finalize_phase_memories">
+
+**Finalize phase memories for all milestone phases:**
+
+Before archiving phase directories, ensure every completed phase has its memory
+written to Claude Code's auto-memory system. This is a safety net -- the primary
+write happens at verify-work time. This step catches any phase that was verified
+but whose memory write was skipped or failed.
+
+```bash
+# For each phase in this milestone, write memory if not already present
+for phase_dir in .planning/phases/*/; do
+  PHASE_NUM=$(basename "$phase_dir" | grep -oE '^[0-9]+')
+  if [ -n "$PHASE_NUM" ]; then
+    node "$GSD_TOOLS" write-phase-memory "$PHASE_NUM" 2>/dev/null || true
+  fi
+done
+```
+
+This writes `project`-type memory files into Claude Code's memdir auto-memory
+directory. Each file uses a stable filename (phase-NN-slug.md) so repeated runs
+update the same file instead of creating duplicates. The MEMORY.md index is also
+updated so Claude Code auto-recalls phase outcomes in future sessions.
+
+</step>
+
 <step name="reorganize_roadmap_and_delete_originals">
 
 After `milestone complete` has archived, reorganize ROADMAP.md with milestone groupings, then delete originals:

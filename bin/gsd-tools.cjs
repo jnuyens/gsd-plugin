@@ -34,6 +34,10 @@
  *   websearch <query>                  Search web via Brave API (if configured)
  *     [--limit N] [--freshness day|week|month]
  *
+ * Phase Memory:
+ *   write-phase-memory <phase>         Write lean project memory for completed phase
+ *                                      into Claude Code's auto-memory system (memdir)
+ *
  * Phase Operations:
  *   phase next-decimal <phase>         Calculate next decimal phase number
  *   phase add <description> [--id ID]   Append new phase to roadmap + create dir
@@ -946,6 +950,14 @@ async function runCommand(command, args, cwd, raw) {
       } else {
         error('Unknown workstream subcommand. Available: create, list, status, complete, set, get, progress');
       }
+      break;
+    }
+
+    // ─── Phase Memory ──────────────────────────────────────────────────────
+
+    case 'write-phase-memory': {
+      const memory = require('./lib/memory.cjs');
+      memory.cmdWritePhaseMemory(cwd, args[1], raw);
       break;
     }
 

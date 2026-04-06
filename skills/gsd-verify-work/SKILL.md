@@ -436,6 +436,20 @@ Present summary:
 
 **If issues == 0:**
 
+**Write phase memory to auto-memory system:**
+
+When all tests pass, write a lean project memory for this phase so outcomes
+are recalled automatically in future sessions:
+
+```bash
+node "$GSD_TOOLS" write-phase-memory "${PHASE_NUM}" 2>/dev/null || true
+```
+
+This writes one `project`-type memory file per phase into Claude Code's
+memdir auto-memory directory and updates the MEMORY.md index. The memory
+contains only durable phase outcomes and non-obvious decisions -- nothing
+derivable from git log or code inspection.
+
 ```bash
 SECURITY_CFG=$(node "$GSD_TOOLS" config-get workflow.security_enforcement --raw 2>/dev/null || echo "true")
 SECURITY_FILE=$(ls "${PHASE_DIR}"/*-SECURITY.md 2>/dev/null | head -1)
