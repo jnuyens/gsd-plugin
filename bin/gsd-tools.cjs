@@ -34,10 +34,6 @@
  *   websearch <query>                  Search web via Brave API (if configured)
  *     [--limit N] [--freshness day|week|month]
  *
- * Phase Memory:
- *   write-phase-memory <phase>         Write lean project memory for completed phase
- *                                      into Claude Code's auto-memory system (memdir)
- *
  * Phase Operations:
  *   phase next-decimal <phase>         Calculate next decimal phase number
  *   phase add <description> [--id ID]   Append new phase to roadmap + create dir
@@ -146,19 +142,7 @@
 const fs = require('fs');
 const path = require('path');
 const core = require('./lib/core.cjs');
-const { error, findProjectRoot, getActiveWorkstream, resolveGsdRoot, resolveGsdDataDir } = core;
-
-// ─── Plugin path context ─────────────────────────────────────────────────────
-// Expose GSD_ROOT and GSD_DATA as env vars for child processes and hooks.
-// CLAUDE_PLUGIN_ROOT / CLAUDE_PLUGIN_DATA take precedence when set by
-// Claude Code's plugin loader; otherwise resolveGsdRoot/resolveGsdDataDir
-// fall back to repo detection or legacy install paths.
-if (!process.env.GSD_ROOT) {
-  process.env.GSD_ROOT = resolveGsdRoot();
-}
-if (!process.env.GSD_DATA) {
-  process.env.GSD_DATA = resolveGsdDataDir();
-}
+const { error, findProjectRoot, getActiveWorkstream } = core;
 const state = require('./lib/state.cjs');
 const phase = require('./lib/phase.cjs');
 const roadmap = require('./lib/roadmap.cjs');
@@ -953,28 +937,38 @@ async function runCommand(command, args, cwd, raw) {
       break;
     }
 
-    // ─── Phase Memory ──────────────────────────────────────────────────────
-
-    case 'write-phase-memory': {
-      const memory = require('./lib/memory.cjs');
-      memory.cmdWritePhaseMemory(cwd, args[1], raw);
-      break;
-    }
-
-    // ─── Legacy Migration ─────────────────────────────────────────────────
-
-    case 'migrate': {
-      const legacyCleanup = require('../migrations/legacy-cleanup.cjs');
-      legacyCleanup.main().catch((err) => {
-        error(`Migration failed: ${err.message}`);
-      });
-      break;
-    }
-
     // ─── Documentation ────────────────────────────────────────────────────
 
     case 'docs-init': {
       docs.cmdDocsInit(cwd, raw);
+      break;
+    }
+
+    // ─── Phase Memory ──────────────────────────────────────────────────
+
+    case 'write-phase-memory': {
+      const memory = require('./lib/memory.cjs');
+      const phaseArg = args[0];
+      if (!phaseArg) { error('Usage: write-phase-memory <phase-number>'); }
+      memory.writePhaseMemory(cwd, phaseArg, raw);
+      break;
+    }
+
+    // ─── Migration ───────────────────────────────────────────────────
+
+    case 'migrate': {
+      const migrationPath = path.join(__dirname, '..', 'migrations', 'legacy-cleanup.cjs');
+      if (!fs.existsSync(migrationPath)) {
+        error('Migration helper not found at migrations/legacy-cleanup.cjs');
+      }
+      const { execFileSync } = require('child_process');
+      try {
+        const result = execFileSync('node', [migrationPath, ...args], { encoding: 'utf-8', stdio: 'pipe' });
+        process.stdout.write(result);
+      } catch (e) {
+        process.stderr.write(e.stderr || e.message);
+        process.exit(1);
+      }
       break;
     }
 

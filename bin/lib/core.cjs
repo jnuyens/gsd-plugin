@@ -22,22 +22,18 @@ const { MODEL_PROFILES } = require('./model-profiles.cjs');
  * @returns {string} Absolute path to GSD content root
  */
 function resolveGsdRoot() {
-  // Plugin cache install
   if (process.env.CLAUDE_PLUGIN_ROOT) {
     return process.env.CLAUDE_PLUGIN_ROOT;
   }
-  // Repo checkout: __dirname is <repo>/bin/lib/ → go up 2 levels
   const repoCandidate = path.resolve(__dirname, '..', '..');
   const pluginManifest = path.join(repoCandidate, '.claude-plugin', 'plugin.json');
   if (fs.existsSync(pluginManifest)) {
     return repoCandidate;
   }
-  // Legacy fallback
   const legacyRoot = path.join(os.homedir(), '.claude', 'get-shit-done');
   if (fs.existsSync(legacyRoot)) {
     return legacyRoot;
   }
-  // Last resort: use repo candidate even without manifest
   return repoCandidate;
 }
 
@@ -48,8 +44,6 @@ function resolveGsdRoot() {
  * 1. CLAUDE_PLUGIN_DATA env var (plugin-managed persistent storage)
  * 2. Repo root (for development, data lives alongside code)
  * 3. Legacy fallback: <homedir>/.claude/get-shit-done
- *
- * @returns {string} Absolute path to GSD data directory
  */
 function resolveGsdDataDir() {
   if (process.env.CLAUDE_PLUGIN_DATA) {
@@ -60,9 +54,6 @@ function resolveGsdDataDir() {
 
 /**
  * Resolve a packaged asset path relative to the GSD content root.
- *
- * @param {...string} segments - Path segments relative to GSD root
- * @returns {string} Absolute path to the asset
  */
 function resolveGsdAsset(...segments) {
   return path.join(resolveGsdRoot(), ...segments);
@@ -1250,11 +1241,11 @@ function getRoadmapPhaseInternal(cwd, phaseNum) {
 
 /**
  * Resolve the agents directory from the GSD install location.
+ * gsd-tools.cjs lives at <configDir>/get-shit-done/bin/gsd-tools.cjs,
+ * so agents/ is at <configDir>/agents/.
  *
- * Resolution order:
- * 1. GSD_AGENTS_DIR env var (tests and non-standard installs)
- * 2. Plugin root agents/ directory (packaged plugin or repo checkout)
- * 3. Fallback: configDir/agents/ (legacy install layout)
+ * GSD_AGENTS_DIR env var overrides the default path. Used in tests and for
+ * installs where the agents directory is not co-located with gsd-tools.cjs.
  *
  * @returns {string} Absolute path to the agents directory
  */
@@ -1262,14 +1253,8 @@ function getAgentsDir() {
   if (process.env.GSD_AGENTS_DIR) {
     return process.env.GSD_AGENTS_DIR;
   }
-  // Use packaged plugin root for agent resolution
-  const pluginAgents = path.join(resolveGsdRoot(), 'agents');
-  if (fs.existsSync(pluginAgents)) {
-    return pluginAgents;
-  }
-  // Fallback: configDir layout (GSD root is inside configDir)
-  const gsdRoot = resolveGsdRoot();
-  return path.join(path.dirname(gsdRoot), 'agents');
+  // __dirname is get-shit-done/bin/lib/ → go up 3 levels to configDir
+  return path.join(__dirname, '..', '..', '..', 'agents');
 }
 
 /**
