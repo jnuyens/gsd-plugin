@@ -102,8 +102,14 @@ claude plugin uninstall gsd
 Enable auto-update for the marketplace in Claude Code settings and updates will be applied automatically at startup. For manual updates:
 
 ```bash
+# Step 1: Pull the latest marketplace catalog from GitHub
 claude plugin marketplace update gsd-plugin
+
+# Step 2: Reinstall the plugin to pick up the new version
+claude plugin install gsd@gsd-plugin
 ```
+
+Note: Step 1 refreshes the marketplace index but does not upgrade the installed plugin. Step 2 is needed to install the new version.
 
 ## Migrating from legacy install
 
