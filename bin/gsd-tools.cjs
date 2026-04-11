@@ -976,6 +976,16 @@ async function runCommand(command, args, cwd, raw) {
       // pre-compact handler below to run at all. [Rule 1 - Bug]
       const hookType = args[1]; // session-start, pre-tool-use, post-tool-use, pre-compact
       if (hookType === 'session-start') {
+        // Read hook input from stdin for source detection.
+        // Best effort: stdin may not be a readable file in every invocation
+        // (test harnesses, manual invocation). A missing/unparseable stdin is
+        // never fatal -- we just default source to 'startup'.
+        let hookInput = {};
+        try {
+          const stdinData = fs.readFileSync(0, 'utf-8');
+          if (stdinData) hookInput = JSON.parse(stdinData);
+        } catch { /* stdin may not be available or parseable */ }
+
         // Auto-migrate legacy artifacts on first session
         try {
           const migrationPath = path.join(__dirname, '..', 'migrations', 'legacy-cleanup.cjs');
@@ -989,6 +999,49 @@ async function runCommand(command, args, cwd, raw) {
             }
           }
         } catch { /* never break session start */ }
+
+        // HANDOFF.json detection for auto-resume (D-08, D-09, RESM-02)
+        // Only check on 'startup' and 'compact' sources.
+        // Skip on 'clear' (user intentionally cleared) and 'resume' (avoid
+        // infinite loops -- we're already in a resume flow).
+        //
+        // SessionStart hook stdout is injected as a system message into the
+        // conversation via executeHooks -> AggregatedHookResult.systemMessage,
+        // which is how we tell Claude to run /gsd-resume-work without any
+        // user interaction.
+        //
+        // Wrapped in its own try/catch so a malformed HANDOFF.json or any
+        // unexpected I/O error can never crash session start (T-04-11).
+        const source = hookInput.source || 'startup';
+        if (source === 'startup' || source === 'compact') {
+          try {
+            const { planningPaths } = require('./lib/core.cjs');
+            const handoffPath = path.join(planningPaths(cwd).planning, 'HANDOFF.json');
+            if (fs.existsSync(handoffPath)) {
+              // Read HANDOFF.json for phase/plan/task context in the message.
+              // Only lightweight fields are exposed in the system message
+              // (T-04-09): no uncommitted files, no full decisions log.
+              const handoff = JSON.parse(fs.readFileSync(handoffPath, 'utf-8'));
+              const phase = handoff.phase_name || handoff.phase || 'unknown';
+              const plan = handoff.plan || '?';
+              const task = handoff.task || '?';
+              const handoffSource = handoff.source || 'unknown';
+
+              // stdout becomes system message for Claude (per SessionStart
+              // hook contract in executeHooks).
+              const systemMsg = [
+                'GSD session continuity: Found checkpoint from previous session.',
+                `Phase: ${phase}, Plan: ${plan}, Task: ${task} (source: ${handoffSource}).`,
+                'Run /gsd-resume-work to restore context and continue.',
+                'Do this immediately without waiting for user input.'
+              ].join(' ');
+              process.stdout.write(systemMsg);
+
+              // stderr for user-visible notification so they see what's happening.
+              process.stderr.write('GSD: session checkpoint detected, auto-resuming...\n');
+            }
+          } catch { /* never break session start */ }
+        }
       } else if (hookType === 'pre-compact') {
         // PreCompact: save checkpoint before context compaction.
         // CRITICAL: stdout must stay EMPTY -- PreCompact stdout becomes
