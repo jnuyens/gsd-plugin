@@ -284,7 +284,7 @@ Set `commit_docs: false` so planning docs stay local and are not committed to an
 Instead of the standard `commit` command, use `commit-to-subrepo` when `sub_repos` is configured:
 
 ```bash
-node $HOME/.claude/get-shit-done/bin/gsd-tools.cjs commit-to-subrepo "feat(02-01): add user API" \
+node ~/.claude/get-shit-done/bin/gsd-tools.cjs commit-to-subrepo "feat(02-01): add user API" \
   --files backend/src/api/users.ts backend/src/types/user.ts frontend/src/components/UserForm.tsx
 ```
 

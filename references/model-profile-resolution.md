@@ -12,7 +12,7 @@ Default: `balanced` if not set or config missing.
 
 ## Lookup Table
 
-@$HOME/.claude/get-shit-done/references/model-profiles.md
+@~/.claude/get-shit-done/references/model-profiles.md
 
 Look up the agent in the table for the resolved profile. Pass the model parameter to Task calls:
 
@@ -25,6 +25,8 @@ Task(
 ```
 
 **Note:** Opus-tier agents resolve to `"inherit"` (not `"opus"`). This causes the agent to use the parent session's model, avoiding conflicts with organization policies that may block specific opus versions.
+
+If `model_profile` is `"adaptive"`, agents resolve to role-based assignments (opus/sonnet/haiku based on agent type).
 
 If `model_profile` is `"inherit"`, all agents resolve to `"inherit"` (useful for OpenCode `/model`).
 

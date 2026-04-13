@@ -25,11 +25,11 @@ Reduce GSD's per-turn token overhead and agent spawn latency without breaking mu
 - ✓ Project context auto-recalled across sessions via memdir pipeline — v1.0
 - ✓ GSD packaged as Claude Code plugin (60 skills, 21 agents, MCP, hooks) — v1.0
 - ✓ Single-step install via `claude plugin install gsd` — v1.0
+- ✓ PreCompact hook saves HANDOFF.json checkpoint via shared `generateCheckpoint`/`writeCheckpoint` library — v1.1 Phase 4
+- ✓ SessionStart hook detects HANDOFF.json and injects auto-resume system message (startup/compact only, skips clear/resume) — v1.1 Phase 4
 
 ### Active
 
-- [ ] PreCompact hook saves HANDOFF.json checkpoint when tokens run low
-- [ ] SessionStart hook detects HANDOFF.json and triggers auto-resume
 - [ ] CLAUDE.md auto-resume instruction as backup trigger
 - [ ] Clean checkpoint lifecycle (create → resume → cleanup)
 - [ ] Add `allowed-tools` to verification skills for read-only enforcement
@@ -61,7 +61,7 @@ Shipped v1.0 with 3 phases, 10 plans, 27 tasks over 7 days.
 Tech stack: Node.js CJS (bin/lib), MCP server (stdio JSON-RPC), Claude Code plugin system.
 ~14k LOC in bin/*.cjs, ~573 LOC MCP server, 60 self-contained skill files (~21k LOC).
 Published as [jnuyens/gsd-plugin](https://github.com/jnuyens/gsd-plugin) on GitHub.
-Based on [GSD 1.33.0](https://github.com/gsd-build/get-shit-done) by TACHES (Lex Christopherson).
+Based on [GSD 1.35.0](https://github.com/gsd-build/get-shit-done) by TACHES (Lex Christopherson).
 
 ## Constraints
 
@@ -102,4 +102,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-11 after v1.1 milestone start*
+*Last updated: 2026-04-11 after v1.1 Phase 4 (Checkpoint and Resume) completion*

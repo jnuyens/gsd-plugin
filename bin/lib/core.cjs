@@ -77,6 +77,16 @@ const WORKSTREAM_SESSION_ENV_KEYS = [
 let cachedControllingTtyToken = null;
 let didProbeControllingTtyToken = false;
 
+// Track all .planning/.lock files held by this process so they can be removed
+// on exit. process.on('exit') fires even on process.exit(1), unlike try/finally
+// which is skipped when error() calls process.exit(1) inside a locked region (#1916).
+const _heldPlanningLocks = new Set();
+process.on('exit', () => {
+  for (const lockPath of _heldPlanningLocks) {
+    try { fs.unlinkSync(lockPath); } catch { /* already gone */ }
+  }
+});
+
 // ─── Path helpers ────────────────────────────────────────────────────────────
 
 /** Normalize a relative path to always use forward slashes (cross-platform). */
@@ -279,45 +289,23 @@ const CONFIG_DEFAULTS = {
   plan_checker: true,
   verifier: true,
   nyquist_validation: true,
+  ai_integration_phase: true,
   parallelization: true,
   brave_search: false,
   firecrawl: false,
   exa_search: false,
-  text_mode: false,
+  text_mode: false, // when true, use plain-text numbered lists instead of AskUserQuestion menus
   sub_repos: [],
-  resolve_model_ids: false,
-  context_window: 200000,
-  phase_naming: 'sequential',
-  project_code: null,
-  subagent_timeout: 300000,
+  resolve_model_ids: false, // false: return alias as-is | true: map to full Claude model ID | "omit": return '' (runtime uses its default)
+  context_window: 200000, // default 200k; set to 1000000 for Opus/Sonnet 4.6 1M models
+  phase_naming: 'sequential', // 'sequential' (default, auto-increment) or 'custom' (arbitrary string IDs)
+  project_code: null, // optional short prefix for phase dirs (e.g., 'CK' → 'CK-01-foundation')
+  subagent_timeout: 300000, // 5 min default; increase for large codebases or slower models (ms)
 };
 
 function loadConfig(cwd) {
   const configPath = path.join(planningDir(cwd), 'config.json');
-  const defaults = {
-    model_profile: 'balanced',
-    commit_docs: true,
-    search_gitignored: false,
-    branching_strategy: 'none',
-    phase_branch_template: 'gsd/phase-{phase}-{slug}',
-    milestone_branch_template: 'gsd/{milestone}-{slug}',
-    quick_branch_template: null,
-    research: true,
-    plan_checker: true,
-    verifier: true,
-    nyquist_validation: true,
-    parallelization: true,
-    brave_search: false,
-    firecrawl: false,
-    exa_search: false,
-    text_mode: false, // when true, use plain-text numbered lists instead of AskUserQuestion menus
-    sub_repos: [],
-    resolve_model_ids: false, // false: return alias as-is | true: map to full Claude model ID | "omit": return '' (runtime uses its default)
-    context_window: 200000, // default 200k; set to 1000000 for Opus/Sonnet 4.6 1M models
-    phase_naming: 'sequential', // 'sequential' (default, auto-increment) or 'custom' (arbitrary string IDs)
-    project_code: null, // optional short prefix for phase dirs (e.g., 'CK' → 'CK-01-foundation')
-    subagent_timeout: 300000, // 5 min default; increase for large codebases or slower models (ms)
-  };
+  const defaults = CONFIG_DEFAULTS;
 
   try {
     const raw = fs.readFileSync(configPath, 'utf-8');
@@ -373,7 +361,7 @@ function loadConfig(cwd) {
       // Extract top-level key names from dot-notation paths (e.g., 'workflow.research' → 'workflow')
       ...[...VALID_CONFIG_KEYS].map(k => k.split('.')[0]),
       // Section containers that hold nested sub-keys
-      'git', 'workflow', 'planning', 'hooks',
+      'git', 'workflow', 'planning', 'hooks', 'features',
       // Internal keys loadConfig reads but config-set doesn't expose
       'model_overrides', 'agent_skills', 'context_window', 'resolve_model_ids',
       // Deprecated keys (still accepted for migration, not in config-set)
@@ -438,13 +426,46 @@ function loadConfig(cwd) {
       response_language: get('response_language') || null,
     };
   } catch {
-    return defaults;
+    // Fall back to ~/.gsd/defaults.json only for truly pre-project contexts (#1683)
+    // If .planning/ exists, the project is initialized — just missing config.json
+    if (fs.existsSync(planningDir(cwd))) {
+      return defaults;
+    }
+    try {
+      const home = process.env.GSD_HOME || os.homedir();
+      const globalDefaultsPath = path.join(home, '.gsd', 'defaults.json');
+      const raw = fs.readFileSync(globalDefaultsPath, 'utf-8');
+      const globalDefaults = JSON.parse(raw);
+      return {
+        ...defaults,
+        model_profile: globalDefaults.model_profile ?? defaults.model_profile,
+        commit_docs: globalDefaults.commit_docs ?? defaults.commit_docs,
+        research: globalDefaults.research ?? defaults.research,
+        plan_checker: globalDefaults.plan_checker ?? defaults.plan_checker,
+        verifier: globalDefaults.verifier ?? defaults.verifier,
+        nyquist_validation: globalDefaults.nyquist_validation ?? defaults.nyquist_validation,
+        parallelization: globalDefaults.parallelization ?? defaults.parallelization,
+        text_mode: globalDefaults.text_mode ?? defaults.text_mode,
+        resolve_model_ids: globalDefaults.resolve_model_ids ?? defaults.resolve_model_ids,
+        context_window: globalDefaults.context_window ?? defaults.context_window,
+        subagent_timeout: globalDefaults.subagent_timeout ?? defaults.subagent_timeout,
+        model_overrides: globalDefaults.model_overrides || null,
+        agent_skills: globalDefaults.agent_skills || {},
+        response_language: globalDefaults.response_language || null,
+      };
+    } catch {
+      return defaults;
+    }
   }
 }
 
 // ─── Git utilities ────────────────────────────────────────────────────────────
 
+const _gitIgnoredCache = new Map();
+
 function isGitIgnored(cwd, targetPath) {
+  const key = cwd + '::' + targetPath;
+  if (_gitIgnoredCache.has(key)) return _gitIgnoredCache.get(key);
   try {
     // --no-index checks .gitignore rules regardless of whether the file is tracked.
     // Without it, git check-ignore returns "not ignored" for tracked files even when
@@ -456,8 +477,10 @@ function isGitIgnored(cwd, targetPath) {
       cwd,
       stdio: 'pipe',
     });
+    _gitIgnoredCache.set(key, true);
     return true;
   } catch {
+    _gitIgnoredCache.set(key, false);
     return false;
   }
 }
@@ -642,10 +665,15 @@ function withPlanningLock(cwd, fn) {
         acquired: new Date().toISOString(),
       }), { flag: 'wx' });
 
+      // Register for exit-time cleanup so process.exit(1) inside a locked region
+      // cannot leave a stale lock file (#1916).
+      _heldPlanningLocks.add(lockPath);
+
       // Lock acquired — run the function
       try {
         return fn();
       } finally {
+        _heldPlanningLocks.delete(lockPath);
         try { fs.unlinkSync(lockPath); } catch { /* already released */ }
       }
     } catch (err) {
@@ -659,8 +687,8 @@ function withPlanningLock(cwd, fn) {
           }
         } catch { continue; }
 
-        // Wait and retry
-        spawnSync('sleep', ['0.1'], { stdio: 'ignore' });
+        // Wait and retry (cross-platform, no shell dependency)
+        Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 100);
         continue;
       }
       throw err;
@@ -714,19 +742,23 @@ function planningRoot(cwd) {
 }
 
 /**
- * Get common .planning file paths, workstream-aware.
- * Scoped paths (state, roadmap, phases, requirements) resolve to the active workstream.
- * Shared paths (project, config) always resolve to the root .planning/.
+ * Get common .planning file paths, project-and-workstream-aware.
+ *
+ * All paths route through planningDir(cwd, ws), which honors the GSD_PROJECT
+ * env var and active workstream. This matches loadConfig() above (line 256),
+ * which has always read config.json via planningDir(cwd). Previously project
+ * and config were resolved against the unrouted .planning/ root, which broke
+ * `gsd-tools config-get` in multi-project layouts (the CRUD writers and the
+ * reader pointed at different files).
  */
 function planningPaths(cwd, ws) {
   const base = planningDir(cwd, ws);
-  const root = path.join(cwd, '.planning');
   return {
     planning: base,
     state: path.join(base, 'STATE.md'),
     roadmap: path.join(base, 'ROADMAP.md'),
-    project: path.join(root, 'PROJECT.md'),
-    config: path.join(root, 'config.json'),
+    project: path.join(base, 'PROJECT.md'),
+    config: path.join(base, 'config.json'),
     phases: path.join(base, 'phases'),
     requirements: path.join(base, 'REQUIREMENTS.md'),
   };
@@ -923,7 +955,10 @@ function normalizePhaseName(phase) {
   const match = stripped.match(/^(\d+)([A-Z])?((?:\.\d+)*)/i);
   if (match) {
     const padded = match[1].padStart(2, '0');
-    const letter = match[2] ? match[2].toUpperCase() : '';
+    // Preserve original case of letter suffix (#1962).
+    // Uppercasing causes directory/roadmap mismatches on case-sensitive filesystems
+    // (e.g., "16c" in ROADMAP.md → directory "16C-name" → progress can't match).
+    const letter = match[2] || '';
     const decimal = match[3] || '';
     return padded + letter + decimal;
   }
@@ -1529,6 +1564,38 @@ function readSubdirectories(dirPath, sort = false) {
   }
 }
 
+// ─── Atomic file writes ───────────────────────────────────────────────────────
+
+/**
+ * Write a file atomically using write-to-temp-then-rename.
+ *
+ * On POSIX systems, `fs.renameSync` is atomic when the source and destination
+ * are on the same filesystem. This prevents a process killed mid-write from
+ * leaving a truncated file that is unparseable on next read.
+ *
+ * The temp file is placed alongside the target so it is guaranteed to be on
+ * the same filesystem (required for rename atomicity). The PID is embedded in
+ * the temp file name so concurrent writers use distinct paths.
+ *
+ * If `renameSync` fails (e.g. cross-device move), the function falls back to a
+ * direct `writeFileSync` so callers always get a best-effort write.
+ *
+ * @param {string} filePath  Absolute path to write.
+ * @param {string|Buffer} content  File content.
+ * @param {string} [encoding='utf-8']  Encoding passed to writeFileSync.
+ */
+function atomicWriteFileSync(filePath, content, encoding = 'utf-8') {
+  const tmpPath = filePath + '.tmp.' + process.pid;
+  try {
+    fs.writeFileSync(tmpPath, content, encoding);
+    fs.renameSync(tmpPath, filePath);
+  } catch (renameErr) {
+    // Clean up the temp file if rename failed, then fall back to direct write.
+    try { fs.unlinkSync(tmpPath); } catch { /* already gone or never created */ }
+    fs.writeFileSync(filePath, content, encoding);
+  }
+}
+
 module.exports = {
   output,
   error,
@@ -1574,6 +1641,7 @@ module.exports = {
   readSubdirectories,
   getAgentsDir,
   checkAgentsInstalled,
+  atomicWriteFileSync,
   resolveGsdRoot,
   resolveGsdDataDir,
   resolveGsdAsset,

@@ -6,6 +6,8 @@ const fs = require('fs');
 const path = require('path');
 const { safeReadFile, normalizeMd, output, error } = require('./core.cjs');
 
+// ─── Parsing engine ───────────────────────────────────────────────────────────
+
 /**
  * Split a YAML inline array body on commas, respecting quoted strings.
  * e.g. '"a, b", c' → ['a, b', 'c']
@@ -37,8 +39,6 @@ function splitInlineArray(body) {
   if (trimmed) items.push(trimmed);
   return items;
 }
-
-// ─── Parsing engine ───────────────────────────────────────────────────────────
 
 function extractFrontmatter(content) {
   const frontmatter = {};
