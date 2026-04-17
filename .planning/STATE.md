@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-04-11)
 Phase: 5
 Plan: Not started
 Status: Phase 04 complete (human UAT partial — live /compact test pending), ready for Phase 05
-Last activity: 2026-04-14 - Completed quick task 260414-k59: clarify plugin commands run inside Claude Code session
+Last activity: 2026-04-17 - Completed quick task 260417-wib: Integrate Opus 4.7 model and analyse gsd-2 for feature borrowing
 
 ```
 v1.1 Progress: [===_______] 33% (1/3 phases)
@@ -72,6 +72,8 @@ None.
 | 260414-1lv | Update gsd-plugin to 1.35.0 upstream version | 2026-04-13 | 62ce0ca | [260414-1lv-update-gsd-plugin-to-1-35-0-upstream-ver](./quick/260414-1lv-update-gsd-plugin-to-1-35-0-upstream-ver/) |
 | 260414-1yo | Update README to reflect v1.35.0 and add upstream sync checklist | 2026-04-13 | e3fb14e | [260414-1yo-update-readme-to-reflect-v1-35-0-and-ens](./quick/260414-1yo-update-readme-to-reflect-v1-35-0-and-ens/) |
 | 260414-k59 | Clarify plugin commands run inside Claude Code session (install instructions for first-time users) | 2026-04-14 | 4a2f751 | [260414-k59-in-the-documentation-assume-people-never](./quick/260414-k59-in-the-documentation-assume-people-never/) |
+| 260417-3jn | Make gsd-plugin cross-platform: fix hardcoded macOS node path, command injection, Windows tty probe, Windows path redaction | 2026-04-17 | b7dba4a | [260417-3jn-make-gsd-plugin-cross-platform-fix-hardc](./quick/260417-3jn-make-gsd-plugin-cross-platform-fix-hardc/) |
+| 260417-wib | Integrate Opus 4.7 model and analyse gsd-2 for feature borrowing | 2026-04-17 | 97fc602 | [260417-wib-integrate-opus-4-7-model-and-analyse-gsd](./quick/260417-wib-integrate-opus-4-7-model-and-analyse-gsd/) |
 
 ## Session Continuity
 
