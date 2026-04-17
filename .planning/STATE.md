@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-04-11)
 Phase: 5
 Plan: Not started
 Status: Phase 04 complete (human UAT partial — live /compact test pending), ready for Phase 05
-Last activity: 2026-04-13 - Completed quick task 260414-1yo: update README to reflect v1.35.0 and add upstream sync checklist
+Last activity: 2026-04-14 - Completed quick task 260414-k59: clarify plugin commands run inside Claude Code session
 
 ```
 v1.1 Progress: [===_______] 33% (1/3 phases)
@@ -71,6 +71,7 @@ None.
 | 260411-12i | Propose session continuity feature upstream to GSD project | 2026-04-11 | 35375e7 | [260411-12i-propose-session-continuity-feature-upstr](./quick/260411-12i-propose-session-continuity-feature-upstr/) |
 | 260414-1lv | Update gsd-plugin to 1.35.0 upstream version | 2026-04-13 | 62ce0ca | [260414-1lv-update-gsd-plugin-to-1-35-0-upstream-ver](./quick/260414-1lv-update-gsd-plugin-to-1-35-0-upstream-ver/) |
 | 260414-1yo | Update README to reflect v1.35.0 and add upstream sync checklist | 2026-04-13 | e3fb14e | [260414-1yo-update-readme-to-reflect-v1-35-0-and-ens](./quick/260414-1yo-update-readme-to-reflect-v1-35-0-and-ens/) |
+| 260414-k59 | Clarify plugin commands run inside Claude Code session (install instructions for first-time users) | 2026-04-14 | 4a2f751 | [260414-k59-in-the-documentation-assume-people-never](./quick/260414-k59-in-the-documentation-assume-people-never/) |
 
 ## Session Continuity
 
