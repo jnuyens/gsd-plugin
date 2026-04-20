@@ -1,8 +1,8 @@
 # GSD Plugin -- Get Shit Done for Claude Code
 
-**Based on:** [GSD 1.37.1](https://github.com/gsd-build/get-shit-done/releases/tag/v1.37.1) base tree by **TACHES** (Lex Christopherson)
+**Based on:** [GSD 1.38.1](https://github.com/gsd-build/get-shit-done/releases/tag/v1.38.1) base tree by **TACHES** (Lex Christopherson)
 
-**Plugin version:** `2.37.1`
+**Plugin version:** `2.38.1`
 
 A performance-optimized plugin packaging of [GSD](https://github.com/gsd-build/get-shit-done) for Claude Code. Reduces per-turn token overhead by ~92%, adds MCP-backed project state, and bundles everything into a single-install plugin.
 
@@ -16,7 +16,7 @@ plugin_minor = upstream_minor
 plugin_patch = upstream_patch
 ```
 
-So upstream GSD `1.37.1` ships here as plugin `2.37.1`. When upstream advances to `2.x`, this plugin will move to `3.x`. Patch-level changes that are plugin-only (not tied to an upstream sync) bump the patch number further (e.g. `2.37.2`).
+So upstream GSD `1.38.1` ships here as plugin `2.38.1`. When upstream advances to `2.x`, this plugin will move to `3.x`. Patch-level changes that are plugin-only (not tied to an upstream sync) bump the patch number further (e.g. `2.38.2`).
 
 This project repackages the GSD workflow system as a native Claude Code plugin with additional optimizations: skill isolation via `context: fork`, structured MCP tools replacing prompt injection, and cross-session memory via memdir.
 
@@ -47,7 +47,7 @@ That's it. This installs everything: slash commands, agent definitions, hooks, a
 
 ## What GSD Plugin provides
 
-- **59 slash commands** (`/gsd:*`) for project planning, execution, debugging, and verification
+- **81 slash commands** (`/gsd:*`) for project planning, execution, debugging, and verification
 - **21 agent definitions** for specialized workflow roles (planner, executor, researcher, verifier, etc.)
 - **MCP server** exposing project state as queryable resources and mutation tools
 - **Hooks** for session-start context loading, workflow enforcement, checkpoint on compact, and tool-use monitoring
@@ -110,7 +110,7 @@ The `CLAUDE_PLUGIN_ROOT` env var tells the plugin's `bin/lib/core.cjs` to resolv
 
 After launching with the plugin:
 
-1. `/gsd:help` -- lists all 60 commands
+1. `/gsd:help` -- lists all 81 commands
 2. `/gsd:progress` -- shows project state (or prompts to create one)
 3. `/gsd:new-project` -- full project initialization flow
 4. Check MCP resources are available (the GSD MCP server should auto-start via plugin manifest)
