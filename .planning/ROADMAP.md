@@ -20,7 +20,7 @@ Full details: [milestones/v1.0-ROADMAP.md](milestones/v1.0-ROADMAP.md)
 
 ### v1.1 Session Continuity
 
-- [x] **Phase 4: Checkpoint and Resume** - PreCompact hook saves state, SessionStart hook detects and auto-resumes (completed 2026-04-11)
+- [x] **Phase 4: Checkpoint and Resume** - PreCompact hook saves state, SessionStart hook detects and auto-resumes (completed 2026-04-11; live `/compact` UAT passed 2026-04-20)
 - [ ] **Phase 5: Backup Trigger and Cleanup** - CLAUDE.md fallback path + HANDOFF.json cleanup after resume (re-scoped 2026-04-20)
 - [~] **Phase 6: Upstream Compatibility and Documentation** - **Dropped from v1.1.** Upstream GSD 1.34→1.38.x evolved independently of the session-continuity primitives this phase assumed; compat scope needs a rethink before planning. Deferred to v1.2.
 
@@ -73,6 +73,6 @@ Plans:
 | 1. Skill and Agent Optimization | v1.0 | 3/3 | Complete | 2026-04-01 |
 | 2. MCP Server | v1.0 | 2/2 | Complete | 2026-04-04 |
 | 3. Plugin Packaging and Memory | v1.0 | 5/5 | Complete | 2026-04-06 |
-| 4. Checkpoint and Resume | v1.1 | 3/3 | Complete (1 live UAT pending) | 2026-04-11 |
+| 4. Checkpoint and Resume | v1.1 | 3/3 | Complete (live UAT 1 passed 2026-04-20) | 2026-04-11 |
 | 5. Backup Trigger and Cleanup | v1.1 | 0/? | Not started (trimmed scope) | - |
 | 6. Upstream Compatibility and Documentation | v1.1 | — | Dropped (deferred to v1.2) | - |

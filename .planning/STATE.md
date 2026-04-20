@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Session Continuity
 status: executing
-stopped_at: Phase 4 context gathered
-last_updated: "2026-04-11T14:44:03.361Z"
-last_activity: 2026-04-11
+stopped_at: Phase 4 fully verified (live UAT passed) — ready to plan Phase 5
+last_updated: "2026-04-20T00:00:00.000Z"
+last_activity: 2026-04-20
 progress:
   total_phases: 3
   completed_phases: 1
@@ -27,8 +27,8 @@ See: .planning/PROJECT.md (updated 2026-04-11)
 
 Phase: 5
 Plan: Not started
-Status: Phase 04 complete (live /compact UAT still pending). v1.1 re-scoped 2026-04-20 per AUDIT-v1.1.md: Phase 05 trimmed to BKUP-01 + BKUP-02 + LIFE-01; Phase 06 dropped (deferred to v1.2).
-Last activity: 2026-04-20 - Re-scoped v1.1 milestone after audit (Phase 6 dropped, Phase 5 trimmed)
+Status: Phase 04 fully complete — live /compact UAT passed 2026-04-20 (manual trigger; auto-compaction test 2 remains opportunistic). v1.1 re-scoped 2026-04-20 per AUDIT-v1.1.md: Phase 05 trimmed to BKUP-01 + BKUP-02 + LIFE-01; Phase 06 dropped (deferred to v1.2).
+Last activity: 2026-04-20 - Live /compact round-trip UAT confirmed Phase 4 end-to-end
 
 ```
 v1.1 Progress: [===_______] 33% (1/3 phases)
@@ -87,6 +87,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-10T17:11:40.189Z
-Stopped at: Phase 4 context gathered
-Resume file: .planning/phases/04-checkpoint-and-resume/04-CONTEXT.md
+Last session: 2026-04-20T04:27:56.349Z (auto-compact — live UAT pass)
+Stopped at: Phase 4 fully verified; ready to plan Phase 5
+Next action: `/gsd:plan-phase 5` (scope: BKUP-01, BKUP-02, LIFE-01)

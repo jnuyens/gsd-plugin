@@ -15,7 +15,7 @@ Completion snapshot:
 
 | Phase | Status | Artifacts | Notes |
 |-------|--------|-----------|-------|
-| 4 — Checkpoint and Resume | **Verified (synthetic); 1 live UAT pending** | 11 artifacts incl. VERIFICATION.md and HUMAN-UAT.md | All 6 requirements SATISFIED. Live `/compact` round-trip test never performed. |
+| 4 — Checkpoint and Resume | **Verified (synthetic + live UAT 1)** | 11 artifacts incl. VERIFICATION.md and HUMAN-UAT.md | All 6 requirements SATISFIED. Live `/compact` round-trip confirmed 2026-04-20 (user ran /compact, HANDOFF.json written, SessionStart auto-resumed). Test 2 (auto-compaction) opportunistic — same code path. |
 | 5 — Backup Trigger and Lifecycle | **Not started** | None | 0/5 requirements. |
 | 6 — Upstream Compatibility and Documentation | **Not started** | None | 0/6 requirements. |
 
@@ -27,7 +27,7 @@ Completion snapshot:
 | CKPT-02 | 4 | SATISFIED | `uncommitted_files`, `next_action` populated from `git status --porcelain` + STATE.md (spot check 2). |
 | CKPT-03 | 4 | SATISFIED | `context_notes` from STATE.md + recent commits; `decisions` extracted from Accumulated Context section. |
 | RESM-01 | 4 | SATISFIED | SessionStart hook emits systemMsg pointing to `/gsd-resume-work`. |
-| RESM-02 | 4 | **Satisfied (synthetic only)** | Zero-intervention directive contractually verified; **live `/compact` test pending** (04-HUMAN-UAT.md test 1). |
+| RESM-02 | 4 | SATISFIED | Zero-intervention directive contractually verified AND confirmed live 2026-04-20: manual `/compact` → HANDOFF.json (source=auto-compact) → SessionStart systemMessage → Claude invoked `/gsd-resume-work` with no user prompt (04-HUMAN-UAT.md test 1). |
 | RESM-03 | 4 | SATISFIED | systemMsg embeds phase/plan/task from HANDOFF.json. |
 | BKUP-01 | 5 | **OPEN** | CLAUDE.md has no HANDOFF.json check instruction. Template `templates/claude-md.md` unchanged. |
 | BKUP-02 | 5 | **OPEN** | No hook-independent fallback path. |
