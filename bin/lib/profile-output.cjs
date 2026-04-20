@@ -194,6 +194,14 @@ const CLAUDE_MD_WORKFLOW_ENFORCEMENT = [
   'Do not make direct repo edits outside a GSD workflow unless the user explicitly asks to bypass it.',
 ].join('\n');
 
+const CLAUDE_MD_SESSION_CONTINUITY = [
+  'If `.planning/HANDOFF.json` exists at the start of a session, a previous session was interrupted (for example by `/compact` or `/gsd:pause-work`) and its state is captured there.',
+  '',
+  'Run `/gsd:resume-work` immediately — before anything else, without waiting for user input. The resume skill will restore context, show project status, and clean up the handoff file.',
+  '',
+  'This instruction is a backup path. When the SessionStart hook fires it emits the same directive via systemMessage; either trigger is sufficient.',
+].join('\n');
+
 const CLAUDE_MD_PROFILE_PLACEHOLDER = [
   '<!-- GSD:profile-start -->',
   '## Developer Profile',
@@ -374,6 +382,14 @@ function generateArchitectureSection(cwd) {
 function generateWorkflowSection() {
   return {
     content: CLAUDE_MD_WORKFLOW_ENFORCEMENT,
+    source: 'GSD defaults',
+    hasFallback: false,
+  };
+}
+
+function generateSessionContinuitySection() {
+  return {
+    content: CLAUDE_MD_SESSION_CONTINUITY,
     source: 'GSD defaults',
     hasFallback: false,
   };
