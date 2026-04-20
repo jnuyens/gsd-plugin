@@ -32,12 +32,19 @@ Reduce GSD's per-turn token overhead and agent spawn latency without breaking mu
 - ✓ Hook commands fall back to newest cached plugin version when baked `${CLAUDE_PLUGIN_ROOT}` is pruned — v1.1 quick task 260420-vfb
 - ✓ Plugin-side `/gsd-<skill>` references normalized to `/gsd:<skill>` with durable maintenance script for post-sync re-runs — v1.1 quick task 260420-cns
 
-### Active
+### Active (v1.2 Upstream Resilience)
 
-- [ ] Staleness threshold detection for old HANDOFF.json (LIFE-02, v1.2)
-- [ ] Full README session-continuity paragraph — partially covered by auto-resume bullet (DOCS-01, v1.2)
-- [ ] CHANGELOG.md tracking plugin vs upstream versions (DOCS-02, v1.2)
-- [ ] Upstream compat direction review and HANDOFF format alignment (UPST-01, v1.2)
+- [ ] File-layout drift detector catches dangling `@~/.claude/...` references before they ship (DRIFT-01, Phase 7)
+- [ ] Drift detectors hard-fail in CI on any detected drift (DRIFT-02, Phases 7–9)
+- [ ] Committed HANDOFF schema baseline; `checkpoint.cjs` output validates against it in CI (SCHEMA-01/02, Phase 8)
+- [ ] Post-upstream-sync check compares upstream `pause-work` output vs plugin's HANDOFF schema (SCHEMA-03, Phase 8)
+- [ ] Unified `bin/maintenance/check-drift.cjs` runs file-layout + schema + namespace detectors (DRIFT-03, Phase 9)
+- [ ] Full README paragraph documenting session continuity + drift resilience (DOCS-01, Phase 9)
+- [ ] CHANGELOG.md scaffold tracking plugin vs upstream versions (DOCS-02, Phase 9)
+- [ ] PROJECT.md post-sync checklist runs drift check (MAINT-01, Phase 9)
+
+### Active (not yet scoped to a milestone)
+
 - [ ] Add `allowed-tools` to verification skills for read-only enforcement
 - [ ] Tool restriction profiles (implementation vs verification vs research)
 - [ ] Empirical token measurement before/after (analytical estimates validated during v1.0)
@@ -53,20 +60,22 @@ Reduce GSD's per-turn token overhead and agent spawn latency without breaking mu
 
 ## Current State
 
-**Shipped:** v1.1 Session Continuity — 2026-04-20. End-to-end checkpoint-on-compact + auto-resume-on-session-start with CLAUDE.md fallback path and clean handoff lifecycle. Live `/compact` UAT passed. 10/10 in-scope requirements satisfied; 7 rehomed to v1.2 backlog.
+**Shipped:** v1.1 Session Continuity — 2026-04-20. End-to-end checkpoint-on-compact + auto-resume-on-session-start with CLAUDE.md fallback path and clean handoff lifecycle. Live `/compact` UAT passed. Full v1.1 details: [milestones/v1.1-ROADMAP.md](milestones/v1.1-ROADMAP.md).
 
-Full v1.1 details: [milestones/v1.1-ROADMAP.md](milestones/v1.1-ROADMAP.md).
+**In progress:** v1.2 Upstream Resilience — kicked off 2026-04-20 (see below).
 
-## Next Milestone: v1.2 (not yet scoped)
+## Current Milestone: v1.2 Upstream Resilience
 
-Carries forward from v1.1:
-- **LIFE-02** — staleness threshold detection for old HANDOFF.json
-- **LIFE-03** — dedicated `/gsd:checkpoint` skill (optional polish)
-- **DOCS-01** — full README session-continuity paragraph
-- **DOCS-02** — CHANGELOG.md tracking plugin vs upstream versions
-- **UPST-01/03/04** — upstream compat direction review, HANDOFF format alignment, patch packaging, PR
+**Goal:** Detect and hard-fail on upstream drift before it ships — whether a dangling file reference, a HANDOFF schema change, or namespace slippage. Promotes the ad-hoc drift fixes from v1.1 (hook version fallback, namespace rewrite) into canonical, CI-enforced, detector-backed patterns.
 
-Run `/gsd:new-milestone` to scope v1.2 (questioning → research → requirements → roadmap).
+**Why this milestone:** v1.1 closed the session-continuity feature but exposed a meta-problem — the plugin sits downstream of a rapidly-moving upstream (GSD went through 1.34 → 1.38.x during v1.1), and drift was caught ad-hoc by humans noticing bugs. Upstream Resilience makes drift detection a first-class plugin concern: detectors run in CI, hard-fail on drift, and surface the failure at post-sync time rather than after users hit the bug.
+
+**Phases:**
+- Phase 7 — File-layout drift detector (DRIFT-01, DRIFT-02)
+- Phase 8 — HANDOFF schema baseline + detector (SCHEMA-01/02/03; absorbs reframed v1.1 UPST-01)
+- Phase 9 — Unified `check-drift.cjs` + DOCS-01/DOCS-02 + post-sync integration (DRIFT-03, DOCS-01, DOCS-02, MAINT-01)
+
+**Explicitly deferred to v1.3+:** LIFE-02 (staleness detection), LIFE-03 (dedicated checkpoint skill), behavior drift detection (#5 from the drift-category map — needs integration-test infra), UPST-03/04 (upstream PR packaging — still blocked on whether upstream is even the right destination, will be re-evaluated after Phase 8 research into upstream's `pause-work` output).
 
 ## Context
 
@@ -124,4 +133,4 @@ This document evolves at phase transitions and milestone boundaries.
 5. Smoke-test: `node -e "require('./bin/lib/core.cjs')"` + verify local patches (resolveGsdRoot, resolveGsdDataDir, resolveGsdAsset)
 
 ---
-*Last updated: 2026-04-20 after v1.1 milestone completion.*
+*Last updated: 2026-04-20 — v1.2 Upstream Resilience kickoff.*

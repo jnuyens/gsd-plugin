@@ -1,17 +1,17 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.1
-milestone_name: Session Continuity
-status: shipped
-stopped_at: v1.1 archived — milestone shipped 2026-04-20; tag v1.1 created
-last_updated: "2026-04-20T06:00:00Z"
+milestone: v1.2
+milestone_name: Upstream Resilience
+status: planning
+stopped_at: v1.2 kicked off 2026-04-20 — REQUIREMENTS + ROADMAP drafted; ready for /gsd:plan-phase 7
+last_updated: "2026-04-20T06:30:00Z"
 last_activity: 2026-04-20
 progress:
-  total_phases: 2
-  completed_phases: 2
-  total_plans: 5
-  completed_plans: 5
-  percent: 100
+  total_phases: 3
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
@@ -21,18 +21,18 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-11)
 
 **Core value:** Reduce GSD's per-turn token overhead and agent spawn latency without breaking multi-CLI compatibility
-**Current focus:** v1.1 shipped. Next action: `/gsd:new-milestone` to scope v1.2 (backlog seeded from v1.1 deferrals).
+**Current focus:** v1.2 Upstream Resilience — detect and hard-fail on upstream drift before it ships.
 
 ## Current Position
 
-Milestone: v1.1 shipped (2026-04-20) — all in-scope requirements satisfied, tagged, archived.
-Phase: none active. v1.1 phase artifacts moved to `.planning/milestones/v1.1-phases/`.
-Next action: `/gsd:new-milestone` to scope v1.2.
-Last activity: 2026-04-20 — v1.1 milestone archive + tag
+Milestone: v1.2 Upstream Resilience (planning)
+Phase: 7 (File-Layout Drift Detector) — not yet planned
+Status: Requirements + roadmap drafted 2026-04-20. Ready for `/gsd:plan-phase 7`.
+Last activity: 2026-04-20 — v1.2 milestone kickoff
 
 ```
-v1.1 Progress: [==========] 100% SHIPPED
-v1.2: not yet scoped
+v1.2 Progress: [__________] 0% (0/3 phases)
+v1.1 shipped: [==========] 100%
 ```
 
 ## Performance Metrics
@@ -91,6 +91,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-20T06:00:00Z (v1.1 archived + tagged)
-Stopped at: v1.1 shipped. REQUIREMENTS.md deleted (archived to milestones/v1.1-REQUIREMENTS.md). Fresh REQUIREMENTS.md will be generated for v1.2 via `/gsd:new-milestone`.
-Next action: `/gsd:new-milestone` to scope v1.2 (questioning → research → requirements → roadmap).
+Last session: 2026-04-20T06:30:00Z (v1.2 kickoff — REQUIREMENTS + ROADMAP drafted)
+Stopped at: v1.2 Upstream Resilience kickoff complete. 9 requirements defined across 3 phases (7, 8, 9). Research R-1 (upstream `pause-work` output) deferred to Phase 8 plan time.
+Next action: `/gsd:plan-phase 7` to plan the file-layout drift detector (smallest phase; good warm-up for the milestone).
