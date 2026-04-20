@@ -2,7 +2,7 @@
 
 **Based on:** [GSD 1.38.1](https://github.com/gsd-build/get-shit-done/releases/tag/v1.38.1) base tree by **TACHES** (Lex Christopherson)
 
-**Plugin version:** `2.38.1`
+**Plugin version:** `2.38.2`
 
 A performance-optimized plugin packaging of [GSD](https://github.com/gsd-build/get-shit-done) for Claude Code. Reduces per-turn token overhead by ~92%, adds MCP-backed project state, and bundles everything into a single-install plugin.
 
