@@ -27,11 +27,17 @@ Reduce GSD's per-turn token overhead and agent spawn latency without breaking mu
 - ✓ Single-step install via `claude plugin install gsd` — v1.0
 - ✓ PreCompact hook saves HANDOFF.json checkpoint via shared `generateCheckpoint`/`writeCheckpoint` library — v1.1 Phase 4
 - ✓ SessionStart hook detects HANDOFF.json and injects auto-resume system message (startup/compact only, skips clear/resume) — v1.1 Phase 4
+- ✓ CLAUDE.md `## Session Continuity` section provides hook-independent backup trigger — v1.1 Phase 5
+- ✓ `/gsd:resume-work` clears HANDOFF.json after successful resume via `deleteCheckpoint()` + `checkpoint --clear` CLI — v1.1 Phase 5
+- ✓ Hook commands fall back to newest cached plugin version when baked `${CLAUDE_PLUGIN_ROOT}` is pruned — v1.1 quick task 260420-vfb
+- ✓ Plugin-side `/gsd-<skill>` references normalized to `/gsd:<skill>` with durable maintenance script for post-sync re-runs — v1.1 quick task 260420-cns
 
 ### Active
 
-- [ ] CLAUDE.md auto-resume instruction as backup trigger
-- [ ] Clean checkpoint lifecycle (create → resume → cleanup)
+- [ ] Staleness threshold detection for old HANDOFF.json (LIFE-02, v1.2)
+- [ ] Full README session-continuity paragraph — partially covered by auto-resume bullet (DOCS-01, v1.2)
+- [ ] CHANGELOG.md tracking plugin vs upstream versions (DOCS-02, v1.2)
+- [ ] Upstream compat direction review and HANDOFF format alignment (UPST-01, v1.2)
 - [ ] Add `allowed-tools` to verification skills for read-only enforcement
 - [ ] Tool restriction profiles (implementation vs verification vs research)
 - [ ] Empirical token measurement before/after (analytical estimates validated during v1.0)
@@ -45,21 +51,29 @@ Reduce GSD's per-turn token overhead and agent spawn latency without breaking mu
 - WorkflowTool registration — feature-gated, wait for public API
 - Offline mode — real-time context is core value
 
-## Current Milestone: v1.1 Session Continuity
+## Current State
 
-**Goal:** Seamless GSD session continuity across context resets using Claude Code's native hook events.
+**Shipped:** v1.1 Session Continuity — 2026-04-20. End-to-end checkpoint-on-compact + auto-resume-on-session-start with CLAUDE.md fallback path and clean handoff lifecycle. Live `/compact` UAT passed. 10/10 in-scope requirements satisfied; 7 rehomed to v1.2 backlog.
 
-**Target features:**
-- PreCompact hook saves HANDOFF.json checkpoint when tokens run low
-- SessionStart hook detects HANDOFF.json and triggers auto-resume
-- CLAUDE.md instruction as backup for auto-resume
-- Clean checkpoint lifecycle (create → resume → cleanup)
+Full v1.1 details: [milestones/v1.1-ROADMAP.md](milestones/v1.1-ROADMAP.md).
+
+## Next Milestone: v1.2 (not yet scoped)
+
+Carries forward from v1.1:
+- **LIFE-02** — staleness threshold detection for old HANDOFF.json
+- **LIFE-03** — dedicated `/gsd:checkpoint` skill (optional polish)
+- **DOCS-01** — full README session-continuity paragraph
+- **DOCS-02** — CHANGELOG.md tracking plugin vs upstream versions
+- **UPST-01/03/04** — upstream compat direction review, HANDOFF format alignment, patch packaging, PR
+
+Run `/gsd:new-milestone` to scope v1.2 (questioning → research → requirements → roadmap).
 
 ## Context
 
-Shipped v1.0 with 3 phases, 10 plans, 27 tasks over 7 days.
+Shipped v1.0 with 3 phases, 10 plans, 27 tasks over 7 days (2026-04-01 → 2026-04-06).
+Shipped v1.1 with 2 phases, 5 plans, plus 4 structurally related quick tasks over 9 days (2026-04-11 → 2026-04-20).
 Tech stack: Node.js CJS (bin/lib), MCP server (stdio JSON-RPC), Claude Code plugin system.
-~14k LOC in bin/*.cjs, ~573 LOC MCP server, 60 self-contained skill files (~21k LOC).
+~14k LOC in bin/*.cjs, ~573 LOC MCP server, 81 self-contained skill files (~21k LOC).
 Published as [jnuyens/gsd-plugin](https://github.com/jnuyens/gsd-plugin) on GitHub.
 Based on [GSD 1.38.1](https://github.com/gsd-build/get-shit-done) by TACHES (Lex Christopherson).
 
@@ -110,4 +124,4 @@ This document evolves at phase transitions and milestone boundaries.
 5. Smoke-test: `node -e "require('./bin/lib/core.cjs')"` + verify local patches (resolveGsdRoot, resolveGsdDataDir, resolveGsdAsset)
 
 ---
-*Last updated: 2026-04-20 after upstream sync to GSD 1.38.1*
+*Last updated: 2026-04-20 after v1.1 milestone completion.*

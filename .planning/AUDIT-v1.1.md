@@ -1,11 +1,13 @@
 ---
 milestone: v1.1
 milestone_name: Session Continuity
-audited: 2026-04-20
-status: partial — 6/17 requirements satisfied, 11 open across Phases 5 + 6
+audited: 2026-04-20 (initial) + 2026-04-20 (post-execution addendum)
+status: complete — all in-scope requirements satisfied; 7 requirements rehomed to v1.2 backlog per Option C rescope. See §Post-execution addendum.
 ---
 
 # v1.1 Session Continuity — Milestone Audit
+
+> **Post-execution addendum below.** The analysis in §Scope..§Options captures the state on the morning of 2026-04-20 when only Phase 4 was executed and Phases 5–6 hadn't started. The recommendation (Option C) was accepted and enacted that same day. See §Post-execution addendum at the end for the closing state.
 
 ## Scope
 
@@ -74,3 +76,63 @@ Not applicable — only Phase 4 is implemented. Integration check is deferred un
 - UPST-* should be rescoped once upstream's own direction is clearer — do not execute in v1.1.
 
 Next concrete step: before planning anything, run the live `/compact` test from `04-HUMAN-UAT.md` test 1. If it passes, Phase 4 closes cleanly. If it fails, Phase 5 gets a new requirement (fix what the live test exposes) before shipping.
+
+---
+
+## Post-execution addendum
+
+**Written:** 2026-04-20 (end of day, after Phase 5 execution and namespace rewrite)
+
+### What was enacted
+
+Option C recommendation from §Options was taken verbatim:
+
+- **Phase 4 live `/compact` UAT** — ran same day. PreCompact hook wrote HANDOFF.json (source=auto-compact, 2026-04-20T04:27:56Z), SessionStart systemMessage fired on next session, Claude auto-invoked `/gsd:resume-work` with zero user intervention. Full round-trip confirmed end-to-end. RESM-02 promoted from "synthetic only" to SATISFIED.
+- **Phase 5 re-scope** — trimmed to BKUP-01 + BKUP-02 + LIFE-01 (dropping LIFE-02 and LIFE-03 as deferred-polish). Two plans written, both executed in parallel (wave 1), ~8 minutes wall clock.
+- **Phase 6 drop** — removed from v1.1 entirely. DOCS-01/02 and UPST-01/03/04 rehomed to v1.2 backlog. UPST-02 closed as satisfied by the earlier 260418-r6d versioning scheme.
+
+### Post-execution coverage
+
+Active-scope requirements for v1.1 (10/10 satisfied):
+
+| Req | Phase | Status | Evidence |
+|-----|-------|--------|----------|
+| CKPT-01 | 4 | SATISFIED | 04-VERIFICATION.md §Observable Truths #1 |
+| CKPT-02 | 4 | SATISFIED | HANDOFF.json includes uncommitted_files, next_action |
+| CKPT-03 | 4 | SATISFIED | context_notes + decisions extracted from STATE.md |
+| RESM-01 | 4 | SATISFIED | SessionStart hook emits systemMsg |
+| RESM-02 | 4 | SATISFIED | Live `/compact` UAT passed 2026-04-20 (04-HUMAN-UAT.md test 1) |
+| RESM-03 | 4 | SATISFIED | systemMsg embeds phase/plan/task from HANDOFF.json |
+| BKUP-01 | 5 | SATISFIED | `## Session Continuity` section live in CLAUDE.md (commits e313942, dc6865d, 5bdc7fc, cde38f4) |
+| BKUP-02 | 5 | SATISFIED | Section works without SessionStart hook (CLAUDE.md is always read) |
+| LIFE-01 | 5 | SATISFIED | `/gsd:resume-work` step 6 invokes `checkpoint --clear` (commit f699947); `deleteCheckpoint()` helper in checkpoint.cjs (commit 8228e7c) |
+| UPST-02 | 6 (closed) | SATISFIED | `plugin_major = upstream_major + 1` versioning (quick task 260418-r6d) — visible in README, package.json, PROJECT.md, GitHub releases |
+
+Deferred to v1.2 backlog (documented in REQUIREMENTS.md "Future Requirements" section):
+
+- LIFE-02 (staleness detection) — nice-to-have polish
+- LIFE-03 (dedicated `/gsd:checkpoint` skill) — `/gsd:pause-work` + `checkpoint --source manual-pause` already cover the manual-trigger need
+- DOCS-01 (README session-continuity paragraph) — partially covered by the "Auto-resume across `/compact`" bullet added 2026-04-20 in quick-260420-rar; full feature-doc paragraph still pending
+- DOCS-02 (CHANGELOG.md) — not yet created
+- UPST-01 (HANDOFF format compat with upstream pause-work) — needs re-assessment after upstream's 1.34→1.38.x evolution
+- UPST-03, UPST-04 (upstream patch packaging + PR) — pending UPST-01
+
+### Opportunistic work captured during the milestone
+
+Beyond the planned scope, four quick tasks landed that are structurally part of v1.1's session-continuity story and belong in its archive:
+
+- **260420-rar** — README feature bullet for auto-resume across `/compact` (partial DOCS-01 coverage)
+- **260420-vfb** — hook commands fall back to newest cached plugin version when the baked `${CLAUDE_PLUGIN_ROOT}` path is pruned after an upgrade. Real failure mode; fix is cross-platform, cross-session.
+- **260420-cns** — rewrite `/gsd-<skill>` → `/gsd:<skill>` across 100 files (273 replacements). Fixes dead-text slash commands inherited from upstream.
+- **260420 durable maintenance script** — added `bin/maintenance/rewrite-command-namespace.cjs` so subsequent upstream syncs can re-run the namespace normalization without needing to regenerate the script.
+
+### Cross-phase integration
+
+Phase 4 (creation + detection) + Phase 5 (fallback + cleanup) compose cleanly:
+
+- PreCompact writes HANDOFF.json → SessionStart hook detects → systemMessage fires → Claude invokes `/gsd:resume-work` → skill reads STATE.md + HANDOFF.json → presents status → deletes HANDOFF.json.
+- CLAUDE.md fallback kicks in if the hook doesn't fire — same `/gsd:resume-work` skill, same cleanup step. One end state from two trigger paths.
+
+### Verdict
+
+v1.1 is complete per the accepted Option C scope. Ready for archive + tag.

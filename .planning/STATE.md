@@ -2,9 +2,9 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Session Continuity
-status: milestone-complete
-stopped_at: Phase 5 complete (BKUP-01, BKUP-02, LIFE-01 all satisfied) — v1.1 done; Phase 6 was dropped 2026-04-20
-last_updated: "2026-04-20T05:15:00Z"
+status: shipped
+stopped_at: v1.1 archived — milestone shipped 2026-04-20; tag v1.1 created
+last_updated: "2026-04-20T06:00:00Z"
 last_activity: 2026-04-20
 progress:
   total_phases: 2
@@ -21,17 +21,18 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-11)
 
 **Core value:** Reduce GSD's per-turn token overhead and agent spawn latency without breaking multi-CLI compatibility
-**Current focus:** Phase 04 — checkpoint-and-resume
+**Current focus:** v1.1 shipped. Next action: `/gsd:new-milestone` to scope v1.2 (backlog seeded from v1.1 deferrals).
 
 ## Current Position
 
-Phase: 5 — complete
-Plan: 05-01 ✓ (BKUP-01/BKUP-02 closed, commits e313942 + dc6865d + 5bdc7fc + cde38f4 + 22389f1) · 05-02 ✓ (LIFE-01 closed, commits 8228e7c + f699947 + 210e202)
-Status: v1.1 milestone complete — all 3 active-scope requirements satisfied (Phase 6 was dropped 2026-04-20). Ready for milestone audit/ship.
-Last activity: 2026-04-20 — Both Phase 5 plans executed in parallel (~8 min wall clock)
+Milestone: v1.1 shipped (2026-04-20) — all in-scope requirements satisfied, tagged, archived.
+Phase: none active. v1.1 phase artifacts moved to `.planning/milestones/v1.1-phases/`.
+Next action: `/gsd:new-milestone` to scope v1.2.
+Last activity: 2026-04-20 — v1.1 milestone archive + tag
 
 ```
-v1.1 Progress: [==========] 100% (2/2 active phases — Phase 6 deferred to v1.2)
+v1.1 Progress: [==========] 100% SHIPPED
+v1.2: not yet scoped
 ```
 
 ## Performance Metrics
@@ -90,6 +91,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-20T05:15:00Z (Phase 5 complete, v1.1 milestone closed)
-Stopped at: Phase 5 fully executed; all active v1.1 requirements (BKUP-01, BKUP-02, LIFE-01, plus the earlier CKPT-01..03 / RESM-01..03) satisfied. Phase 6 was dropped 2026-04-20.
-Next action: `/gsd:audit-milestone v1.1` to confirm coverage before shipping, or `/gsd:complete-milestone` to archive and open v1.2.
+Last session: 2026-04-20T06:00:00Z (v1.1 archived + tagged)
+Stopped at: v1.1 shipped. REQUIREMENTS.md deleted (archived to milestones/v1.1-REQUIREMENTS.md). Fresh REQUIREMENTS.md will be generated for v1.2 via `/gsd:new-milestone`.
+Next action: `/gsd:new-milestone` to scope v1.2 (questioning → research → requirements → roadmap).
