@@ -34,10 +34,10 @@ Reduce GSD's per-turn token overhead and agent spawn latency without breaking mu
 
 ### Active (v1.2 Upstream Resilience)
 
-- [ ] File-layout drift detector catches dangling `@~/.claude/...` references before they ship (DRIFT-01, Phase 7)
-- [ ] Drift detectors hard-fail in CI on any detected drift (DRIFT-02, Phases 7–9)
-- [ ] Committed HANDOFF schema baseline; `checkpoint.cjs` output validates against it in CI (SCHEMA-01/02, Phase 8)
-- [ ] Post-upstream-sync check compares upstream `pause-work` output vs plugin's HANDOFF schema (SCHEMA-03, Phase 8)
+- [x] File-layout drift detector catches dangling `@~/.claude/...` references before they ship (DRIFT-01, Phase 7 — shipped 2026-04-21)
+- [~] Drift detectors hard-fail in CI on any detected drift (DRIFT-02, Phases 7–9 — file-layout + schema portions shipped; namespace portion pending Phase 9)
+- [x] Committed HANDOFF schema baseline; `checkpoint.cjs` output validates against it in CI (SCHEMA-01/02, Phase 8 — shipped 2026-04-21)
+- [x] Post-upstream-sync check compares upstream `pause-work` output vs plugin's HANDOFF schema (SCHEMA-03, Phase 8 — shipped 2026-04-21)
 - [ ] Unified `bin/maintenance/check-drift.cjs` runs file-layout + schema + namespace detectors (DRIFT-03, Phase 9)
 - [ ] Full README paragraph documenting session continuity + drift resilience (DOCS-01, Phase 9)
 - [ ] CHANGELOG.md scaffold tracking plugin vs upstream versions (DOCS-02, Phase 9)
@@ -135,4 +135,4 @@ This document evolves at phase transitions and milestone boundaries.
 7. **Run `UPSTREAM_VERSION=v1.x.y node bin/maintenance/check-upstream-schema.cjs`** (use the just-synced version) to confirm upstream's `/gsd:pause-work` declared fields are still a subset of `schema/handoff-v1.json`. If it fails, update the schema (add missing field as optional, or raise a new field the plugin needs) before declaring the sync complete.
 
 ---
-*Last updated: 2026-04-21 — upstream sync to GSD 1.38.3 (plugin 2.38.3).*
+*Last updated: 2026-04-21 — Phase 8 complete (HANDOFF Schema Baseline + Detector; SCHEMA-01/02/03 closed).*

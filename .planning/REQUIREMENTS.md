@@ -4,12 +4,12 @@
 
 ### File-Layout Drift Detection
 - [x] **DRIFT-01**: Automated detector scans all `@~/.claude/...` and `@$HOME/.claude/...` references in skills, agents, and references; flags any reference pointing at a file that doesn't exist in the plugin layout — **Phase 7 (satisfied 2026-04-21)**
-- [~] **DRIFT-02**: Drift detectors (file-layout, schema, namespace) run in CI and hard-fail on any detected drift — **Phase 7 portion satisfied 2026-04-21**; schema detector (Phase 8) and namespace detector (Phase 9) pending
+- [~] **DRIFT-02**: Drift detectors (file-layout, schema, namespace) run in CI and hard-fail on any detected drift — **Phase 7 (file-layout) + Phase 8 (schema) portions satisfied 2026-04-21**; namespace detector (Phase 9) pending
 
 ### HANDOFF Schema Baseline and Drift Detection
-- [ ] **SCHEMA-01**: Committed `schema/handoff-v1.json` describes the 19-field HANDOFF.json contract with field types and required/optional status — Phase 8
-- [ ] **SCHEMA-02**: `checkpoint.cjs`-generated HANDOFF.json validates against `handoff-v1.json` in CI; schema validation is part of the hard-fail gate — Phase 8
-- [ ] **SCHEMA-03**: Post-upstream-sync check compares upstream's `/gsd:pause-work` output structure against the plugin's HANDOFF schema; flags structural drift as a maintenance task — Phase 8 (research R-1 first)
+- [x] **SCHEMA-01**: Committed `schema/handoff-v1.json` describes the 19-field HANDOFF.json contract with field types and required/optional status — **Phase 8 (satisfied 2026-04-21, commit 1626112)**
+- [x] **SCHEMA-02**: `checkpoint.cjs`-generated HANDOFF.json validates against `handoff-v1.json` in CI; schema validation is part of the hard-fail gate — **Phase 8 (satisfied 2026-04-21, commits f18d357 + fdcab58)**
+- [x] **SCHEMA-03**: Post-upstream-sync check compares upstream's `/gsd:pause-work` output structure against the plugin's HANDOFF schema; flags structural drift as a maintenance task — **Phase 8 (satisfied 2026-04-21, commit 3d67575; R-1 resolved at plan time)**
 
 ### Unified Maintenance + Docs
 - [ ] **DRIFT-03**: Single `bin/maintenance/check-drift.cjs` entry-point runs file-layout + schema + namespace detectors in one invocation and reports a consolidated summary — Phase 9
@@ -25,7 +25,7 @@
 
 ## Research Questions
 
-- [ ] **R-1**: What does upstream GSD's `/gsd:pause-work` actually produce? Is the output structure stable across the 1.34 → 1.38.x versions we've seen, or does it evolve? This scopes whether SCHEMA-03 compares against a fixed point or tracks a moving target. **Estimated effort:** ~30 min upstream repo reconnaissance. **Triggered at:** Phase 8 planning (`/gsd:plan-phase 8`).
+- [x] **R-1**: What does upstream GSD's `/gsd:pause-work` actually produce? Is the output structure stable across the 1.34 → 1.38.x versions we've seen, or does it evolve? **Resolved at Phase 8 planning (2026-04-21):** upstream schema is stable across 1.37.x → 1.38.x (byte-identical workflow body in inspected versions), and plugin is a strict superset (17 upstream fields + 2 plugin-only). SCHEMA-03 compares against a subset relationship; detector confirmed PASS vs v1.38.3. See `.planning/phases/08-handoff-schema-detector/08-RESEARCH.md` for full findings.
 
 ## Future Requirements (deferred to v1.3+)
 
@@ -52,10 +52,10 @@
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | DRIFT-01 | Phase 7 | Satisfied (2026-04-21, commits 63444dd + 777def6) |
-| DRIFT-02 | Phases 7, 8, 9 | Partial — Phase 7 portion satisfied (CI workflow 9450005 + skip-list fix 777def6); Phases 8, 9 pending |
-| SCHEMA-01 | Phase 8 | Pending |
-| SCHEMA-02 | Phase 8 | Pending |
-| SCHEMA-03 | Phase 8 | Pending (blocked on R-1) |
+| DRIFT-02 | Phases 7, 8, 9 | Partial — Phase 7 + Phase 8 portions satisfied (CI workflow 9450005 + skip-list fix 777def6 + schema job fdcab58); Phase 9 namespace portion pending |
+| SCHEMA-01 | Phase 8 | Satisfied (2026-04-21, commit 1626112) |
+| SCHEMA-02 | Phase 8 | Satisfied (2026-04-21, commits f18d357 + fdcab58) |
+| SCHEMA-03 | Phase 8 | Satisfied (2026-04-21, commit 3d67575; R-1 resolved at plan time) |
 | DRIFT-03 | Phase 9 | Pending |
 | DOCS-01 | Phase 9 | Pending |
 | DOCS-02 | Phase 9 | Pending |

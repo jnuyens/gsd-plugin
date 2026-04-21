@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: Upstream Resilience
 status: executing
-stopped_at: Phase 7 complete 2026-04-21 — detector + baseline + first CI shipped; ready for /gsd:plan-phase 8
-last_updated: "2026-04-21T20:15:00Z"
+stopped_at: Phase 8 complete 2026-04-21 — schema + both detectors + second CI job shipped; ready for /gsd:plan-phase 9
+last_updated: "2026-04-21T20:30:00Z"
 last_activity: 2026-04-21
 progress:
   total_phases: 3
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 3
-  completed_plans: 1
-  percent: 33
+  completed_plans: 2
+  percent: 67
 ---
 
 # Project State
@@ -25,13 +25,13 @@ See: .planning/PROJECT.md (updated 2026-04-11)
 
 ## Current Position
 
-Milestone: v1.2 Upstream Resilience (executing — 1/3 phases done)
-Phase: 8 (HANDOFF Schema Baseline + Detector) — planned 2026-04-21
-Status: Phase 8 RESEARCH + CONTEXT + PLAN written. R-1 resolved inline (upstream schema is stable across 1.37.x–1.38.x; plugin is a strict superset). 6 tasks ready. Ready for `/gsd:execute-phase 8`.
-Last activity: 2026-04-21 — Phase 8 research + plan written
+Milestone: v1.2 Upstream Resilience (executing — 2/3 phases done)
+Phase: 9 (Unified check-drift + docs) — pending planning
+Status: Phase 8 executed 2026-04-21. `schema/handoff-v1.json` committed as draft-07 JSON Schema (19 fields, 17 required + 2 optional). `bin/maintenance/check-handoff-schema.cjs` runs `writeCheckpoint()` in tmp dir + ajv validate (runs in CI). `bin/maintenance/check-upstream-schema.cjs` diffs upstream pause-work fields vs schema (post-sync only). `.github/workflows/check-drift.yml` now runs file-layout + handoff-schema jobs in parallel. SCHEMA-01/02/03 + DRIFT-02 (schema portion) closed. Ready for `/gsd:plan-phase 9`.
+Last activity: 2026-04-21 — Phase 8 executed (6 tasks, 6 commits, 12 min)
 
 ```
-v1.2 Progress: [===_______] 33% (1/3 phases — Phase 7 complete; 8, 9 pending)
+v1.2 Progress: [=======___] 67% (2/3 phases — Phase 7 + 8 complete; 9 pending)
 v1.1 shipped: [==========] 100%
 ```
 
@@ -45,6 +45,13 @@ v1.1 shipped: [==========] 100%
 | Phase 02 | 2 | ~17min | 4 |
 | Phase 03 | 5 | ~35min | 16 |
 | **Total** | **10** | **~60min** | **27** |
+
+**v1.2 In progress:**
+
+| Phase | Plans | Duration | Tasks |
+|-------|-------|----------|-------|
+| Phase 07 | 1 | ~9min | 4 |
+| Phase 08 | 1 | ~12min | 6 |
 
 ## Accumulated Context
 
@@ -92,6 +99,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-21T20:15:00Z (Phase 7 executed + scope-fix applied)
-Stopped at: Phase 7 complete. Detector live at `bin/maintenance/check-file-layout.cjs`, baseline at `tests/drift-baseline.json` (109/38/71), first CI workflow at `.github/workflows/check-drift.yml`. Requirements DRIFT-01 and DRIFT-02 (file-layout portion) satisfied.
-Next action: `/gsd:plan-phase 8` to plan the HANDOFF schema baseline + detector. Includes R-1 research at plan time (upstream `/gsd:pause-work` output reconnaissance).
+Last session: 2026-04-21T20:30:00Z (Phase 8 executed)
+Stopped at: Phase 8 complete. Schema baseline at `schema/handoff-v1.json` (19 fields, 17 required + 2 optional, draft-07). Schema validator live at `bin/maintenance/check-handoff-schema.cjs` (runs in CI alongside file-layout). Upstream drift detector live at `bin/maintenance/check-upstream-schema.cjs` (post-sync only per D-10; verified against v1.38.3). `.github/workflows/check-drift.yml` now runs 2 parallel jobs. Post-sync checklist in PROJECT.md extended with namespace-rewrite (step 6) + schema-drift-check (step 7). Requirements SCHEMA-01, SCHEMA-02, SCHEMA-03, and DRIFT-02 schema portion satisfied.
+Next action: `/gsd:plan-phase 9` to plan the unified check-drift.cjs + DOCS-01 (README session-continuity/drift paragraph) + DOCS-02 (CHANGELOG scaffold) + MAINT-01 (post-sync check-drift in PROJECT.md).
