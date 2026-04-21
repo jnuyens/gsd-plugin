@@ -130,9 +130,11 @@ This document evolves at phase transitions and milestone boundaries.
 2. Bump version in: `package.json`, `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json`
 3. **Update README.md**: bump "Based on" version line, update skill/agent counts, add/update feature descriptions for new upstream capabilities
 4. Update this file's Context section (`Based on [GSD x.y.z]`)
-5. Smoke-test: `node -e "require('./bin/lib/core.cjs')"` + verify local patches (resolveGsdRoot, resolveGsdDataDir, resolveGsdAsset)
-6. Run `node bin/maintenance/rewrite-command-namespace.cjs` to normalize any new `/gsd-<skill>` references upstream introduced to the plugin's `/gsd:<skill>` form.
-7. **Run `UPSTREAM_VERSION=v1.x.y node bin/maintenance/check-upstream-schema.cjs`** (use the just-synced version) to confirm upstream's `/gsd:pause-work` declared fields are still a subset of `schema/handoff-v1.json`. If it fails, update the schema (add missing field as optional, or raise a new field the plugin needs) before declaring the sync complete.
+5. **Update `CHANGELOG.md`**: add a new section at the top for the new plugin version, noting the upstream base version in trailing parens (`## [x.y.z] - YYYY-MM-DD  (based on upstream GSD a.b.c)`), with `### Added` / `### Changed` / `### Fixed` subsections summarising what the sync brings
+6. Smoke-test: `node -e "require('./bin/lib/core.cjs')"` + verify local patches (resolveGsdRoot, resolveGsdDataDir, resolveGsdAsset)
+7. Run `node bin/maintenance/rewrite-command-namespace.cjs` to normalize any new dash-style command refs the upstream sync introduced (`/gsd-<skill>` → `/gsd:<skill>`)
+8. Run `node bin/maintenance/check-drift.cjs` — **must exit 0** before declaring the sync complete. If any detector fails, either fix the drift or (if the increase is intentional and reviewed) regenerate the relevant baseline with that detector's `--write-baseline` flag
+9. **Run `UPSTREAM_VERSION=v1.x.y node bin/maintenance/check-upstream-schema.cjs`** (use the just-synced version) — must exit 0 before declaring the sync complete. If upstream added fields, decide whether to absorb them into `schema/handoff-v1.json` as optional or bump to a `handoff-v2.json` alongside
 
 ---
 *Last updated: 2026-04-21 — Phase 8 complete (HANDOFF Schema Baseline + Detector; SCHEMA-01/02/03 closed).*
