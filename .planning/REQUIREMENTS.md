@@ -4,7 +4,7 @@
 
 ### File-Layout Drift Detection
 - [x] **DRIFT-01**: Automated detector scans all `@~/.claude/...` and `@$HOME/.claude/...` references in skills, agents, and references; flags any reference pointing at a file that doesn't exist in the plugin layout — **Phase 7 (satisfied 2026-04-21)**
-- [~] **DRIFT-02**: Drift detectors (file-layout, schema, namespace) run in CI and hard-fail on any detected drift — **Phase 7 (file-layout) + Phase 8 (schema) portions satisfied 2026-04-21**; namespace detector (Phase 9) pending
+- [x] **DRIFT-02**: Drift detectors (file-layout, schema, namespace) run in CI and hard-fail on any detected drift — **Phase 7 (file-layout) + Phase 8 (schema) + Phase 9 (namespace via unified orchestrator) satisfied 2026-04-21**
 
 ### HANDOFF Schema Baseline and Drift Detection
 - [x] **SCHEMA-01**: Committed `schema/handoff-v1.json` describes the 19-field HANDOFF.json contract with field types and required/optional status — **Phase 8 (satisfied 2026-04-21, commit 1626112)**
@@ -12,10 +12,10 @@
 - [x] **SCHEMA-03**: Post-upstream-sync check compares upstream's `/gsd:pause-work` output structure against the plugin's HANDOFF schema; flags structural drift as a maintenance task — **Phase 8 (satisfied 2026-04-21, commit 3d67575; R-1 resolved at plan time)**
 
 ### Unified Maintenance + Docs
-- [ ] **DRIFT-03**: Single `bin/maintenance/check-drift.cjs` entry-point runs file-layout + schema + namespace detectors in one invocation and reports a consolidated summary — Phase 9
-- [ ] **DOCS-01** (carried from v1.1): Full README paragraph documenting session continuity feature + drift-resilience story (failure modes, detector coverage, post-sync checklist) — Phase 9
-- [ ] **DOCS-02** (carried from v1.1): `CHANGELOG.md` scaffold tracking plugin vs upstream versions side-by-side, starting with v2.38.2 (v1.1 shipped) and working forward — Phase 9
-- [ ] **MAINT-01**: PROJECT.md "After each upstream GSD sync" checklist adds a `node bin/maintenance/check-drift.cjs` step as mandatory before declaring the sync complete — Phase 9
+- [x] **DRIFT-03**: Single `bin/maintenance/check-drift.cjs` entry-point runs file-layout + schema + namespace detectors in one invocation and reports a consolidated summary — **Phase 9 (satisfied 2026-04-21, commit 0170c3f)**
+- [x] **DOCS-01** (carried from v1.1): Full README paragraph documenting session continuity feature + drift-resilience story (failure modes, detector coverage, post-sync checklist) — **Phase 9 (satisfied 2026-04-21, commit 7fd66c8)**
+- [x] **DOCS-02** (carried from v1.1): `CHANGELOG.md` scaffold tracking plugin vs upstream versions side-by-side, starting with v2.38.2 (v1.1 shipped) and working forward — **Phase 9 (satisfied 2026-04-21, commit 34a348c)**
+- [x] **MAINT-01**: PROJECT.md "After each upstream GSD sync" checklist adds a `node bin/maintenance/check-drift.cjs` step as mandatory before declaring the sync complete — **Phase 9 (satisfied 2026-04-21, commit f9561e7)**
 
 ## Reframed from v1.1 backlog
 
@@ -52,11 +52,11 @@
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | DRIFT-01 | Phase 7 | Satisfied (2026-04-21, commits 63444dd + 777def6) |
-| DRIFT-02 | Phases 7, 8, 9 | Partial — Phase 7 + Phase 8 portions satisfied (CI workflow 9450005 + skip-list fix 777def6 + schema job fdcab58); Phase 9 namespace portion pending |
+| DRIFT-02 | Phases 7, 8, 9 | Satisfied (2026-04-21) — file-layout in CI (9450005 + 777def6), schema in CI (fdcab58), namespace via unified umbrella (0170c3f) |
 | SCHEMA-01 | Phase 8 | Satisfied (2026-04-21, commit 1626112) |
 | SCHEMA-02 | Phase 8 | Satisfied (2026-04-21, commits f18d357 + fdcab58) |
 | SCHEMA-03 | Phase 8 | Satisfied (2026-04-21, commit 3d67575; R-1 resolved at plan time) |
-| DRIFT-03 | Phase 9 | Pending |
-| DOCS-01 | Phase 9 | Pending |
-| DOCS-02 | Phase 9 | Pending |
-| MAINT-01 | Phase 9 | Pending |
+| DRIFT-03 | Phase 9 | Satisfied (2026-04-21, commit 0170c3f) |
+| DOCS-01 | Phase 9 | Satisfied (2026-04-21, commit 7fd66c8) |
+| DOCS-02 | Phase 9 | Satisfied (2026-04-21, commit 34a348c) |
+| MAINT-01 | Phase 9 | Satisfied (2026-04-21, commit f9561e7) |
