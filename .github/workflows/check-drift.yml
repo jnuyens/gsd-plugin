@@ -15,3 +15,17 @@ jobs:
           node-version: '22'
       - name: Run file-layout drift detector
         run: node bin/maintenance/check-file-layout.cjs
+
+  handoff-schema:
+    name: HANDOFF schema validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - name: Install dev dependencies
+        run: npm ci
+      - name: Validate HANDOFF schema
+        run: node bin/maintenance/check-handoff-schema.cjs
