@@ -26,9 +26,9 @@ See: .planning/PROJECT.md (updated 2026-04-11)
 ## Current Position
 
 Milestone: v1.2 Upstream Resilience (planning)
-Phase: 7 (File-Layout Drift Detector) — not yet planned
-Status: Requirements + roadmap drafted 2026-04-20. Ready for `/gsd:plan-phase 7`.
-Last activity: 2026-04-20 — v1.2 milestone kickoff
+Phase: 7 (File-Layout Drift Detector) — planned 2026-04-21
+Status: Phase 7 CONTEXT + PLAN written. 1 plan, 4 tasks. Ready for `/gsd:execute-phase 7`.
+Last activity: 2026-04-21 — Phase 7 plan written + upstream 1.38.3 sync
 
 ```
 v1.2 Progress: [__________] 0% (0/3 phases)
