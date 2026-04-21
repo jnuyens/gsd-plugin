@@ -56,6 +56,12 @@ That's it. This installs everything: slash commands, agent definitions, hooks, a
 - **Templates and references** for planning artifacts, summaries, verification checklists, and thinking-model guidance
 - **Memory integration** -- phase outcomes persist across sessions via Claude Code's memdir
 
+## Session continuity + drift resilience
+
+**Session continuity.** When Claude Code runs `/compact` (manual or automatic), this plugin's PreCompact hook captures the current session state to `.planning/HANDOFF.json` — phase, plan position, uncommitted files, recent decisions, and a resumption hint. On the next session start, the SessionStart hook detects the handoff and auto-invokes `/gsd:resume-work` with zero user intervention. CLAUDE.md carries the same instruction as a fallback for CLIs where hooks don't fire. The handoff file is deleted after a successful resume so stale state doesn't trigger phantom resume attempts.
+
+**Drift resilience.** The plugin sits downstream of [upstream GSD](https://github.com/gsd-build/get-shit-done), which ships frequent feature releases. To catch structural drift before it reaches users, three detectors run in CI on every push: a **file-layout drift detector** flags dangling `@~/.claude/get-shit-done/*` references (e.g. skill files delegating to workflow bodies that don't exist in the plugin); a **HANDOFF schema validator** confirms `checkpoint.cjs` output matches the committed JSON Schema; and a **namespace drift check** fires if any `/gsd-<skill>` dash-style command refs have been reintroduced. Each detector has a committed ratchet baseline; regressions hard-fail. After each upstream sync, an additional **upstream schema drift detector** (`check-upstream-schema.cjs`) compares upstream's `/gsd:pause-work` output against our schema to catch format divergence early.
+
 ## What changed from upstream GSD
 
 | Aspect | Upstream GSD | This plugin |
