@@ -36,7 +36,7 @@ Full details: [milestones/v1.1-ROADMAP.md](milestones/v1.1-ROADMAP.md)
 
 Phase numbering skips 6 (dropped in v1.1, not reused) and continues at 7.
 
-- [ ] **Phase 7: File-Layout Drift Detector** — Scan skills/agents/references for `@~/.claude/...` and `@$HOME/.claude/...` paths; flag dangling references. Hard-fail in CI. *(planned 2026-04-21 — 1 plan, 4 tasks)*
+- [x] **Phase 7: File-Layout Drift Detector** — Scan skills/agents/references for `@~/.claude/...` and `@$HOME/.claude/...` paths; flag dangling references. Hard-fail in CI. *(completed 2026-04-21 — baseline 109/38/71, first CI workflow on this repo)*
 - [ ] **Phase 8: HANDOFF Schema Baseline + Detector** — Commit `schema/handoff-v1.json`; validate `checkpoint.cjs` output in CI; compare against upstream `pause-work` output post-sync. Absorbs reframed v1.1 UPST-01.
 - [ ] **Phase 9: Unified Check + Docs** — Single `bin/maintenance/check-drift.cjs` entry-point for all drift checks. DOCS-01 (README session-continuity + drift paragraph) and DOCS-02 (CHANGELOG scaffold) ride along. PROJECT.md post-sync checklist gets the drift check.
 
@@ -91,6 +91,6 @@ Phase numbering skips 6 (dropped in v1.1, not reused) and continues at 7.
 | 4. Checkpoint and Resume | v1.1 | 3/3 | Complete | 2026-04-11 |
 | 5. Backup Trigger and Cleanup | v1.1 | 2/2 | Complete | 2026-04-20 |
 | 6. (Dropped — was Upstream Compat/Docs in v1.1) | v1.1 | — | Dropped | — |
-| 7. File-Layout Drift Detector | v1.2 | 0/1 | Planned (1 plan, 4 tasks) | — |
+| 7. File-Layout Drift Detector | v1.2 | 1/1 | Complete (109/38/71 baseline; first CI shipped) | 2026-04-21 |
 | 8. HANDOFF Schema Baseline + Detector | v1.2 | 0/? | Not yet planned (R-1 research at plan time) | — |
 | 9. Unified Check + Docs | v1.2 | 0/? | Not yet planned | — |

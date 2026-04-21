@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: Upstream Resilience
-status: planning
-stopped_at: v1.2 kicked off 2026-04-20 — REQUIREMENTS + ROADMAP drafted; ready for /gsd:plan-phase 7
-last_updated: "2026-04-20T06:30:00Z"
-last_activity: 2026-04-20
+status: executing
+stopped_at: Phase 7 complete 2026-04-21 — detector + baseline + first CI shipped; ready for /gsd:plan-phase 8
+last_updated: "2026-04-21T20:15:00Z"
+last_activity: 2026-04-21
 progress:
   total_phases: 3
-  completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
-  percent: 0
+  completed_phases: 1
+  total_plans: 3
+  completed_plans: 1
+  percent: 33
 ---
 
 # Project State
@@ -25,13 +25,13 @@ See: .planning/PROJECT.md (updated 2026-04-11)
 
 ## Current Position
 
-Milestone: v1.2 Upstream Resilience (planning)
-Phase: 7 (File-Layout Drift Detector) — planned 2026-04-21
-Status: Phase 7 CONTEXT + PLAN written. 1 plan, 4 tasks. Ready for `/gsd:execute-phase 7`.
-Last activity: 2026-04-21 — Phase 7 plan written + upstream 1.38.3 sync
+Milestone: v1.2 Upstream Resilience (executing — 1/3 phases done)
+Phase: 7 complete ✓ (DRIFT-01 + DRIFT-02 file-layout portion closed). Baseline 109/38/71.
+Status: First CI workflow shipped. Detector catches regressions beyond committed baseline. Ready for `/gsd:plan-phase 8`.
+Last activity: 2026-04-21 — Phase 7 executed, baseline scope-fix applied post-execution
 
 ```
-v1.2 Progress: [__________] 0% (0/3 phases)
+v1.2 Progress: [===_______] 33% (1/3 phases — Phase 7 complete; 8, 9 pending)
 v1.1 shipped: [==========] 100%
 ```
 
@@ -92,6 +92,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-20T06:30:00Z (v1.2 kickoff — REQUIREMENTS + ROADMAP drafted)
-Stopped at: v1.2 Upstream Resilience kickoff complete. 9 requirements defined across 3 phases (7, 8, 9). Research R-1 (upstream `pause-work` output) deferred to Phase 8 plan time.
-Next action: `/gsd:plan-phase 7` to plan the file-layout drift detector (smallest phase; good warm-up for the milestone).
+Last session: 2026-04-21T20:15:00Z (Phase 7 executed + scope-fix applied)
+Stopped at: Phase 7 complete. Detector live at `bin/maintenance/check-file-layout.cjs`, baseline at `tests/drift-baseline.json` (109/38/71), first CI workflow at `.github/workflows/check-drift.yml`. Requirements DRIFT-01 and DRIFT-02 (file-layout portion) satisfied.
+Next action: `/gsd:plan-phase 8` to plan the HANDOFF schema baseline + detector. Includes R-1 research at plan time (upstream `/gsd:pause-work` output reconnaissance).

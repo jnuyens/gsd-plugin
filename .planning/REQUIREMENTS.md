@@ -3,8 +3,8 @@
 ## Milestone Requirements
 
 ### File-Layout Drift Detection
-- [ ] **DRIFT-01**: Automated detector scans all `@~/.claude/...` and `@$HOME/.claude/...` references in skills, agents, and references; flags any reference pointing at a file that doesn't exist in the plugin layout — Phase 7
-- [ ] **DRIFT-02**: Drift detectors (file-layout, schema, namespace) run in CI and hard-fail on any detected drift — Phases 7, 8, 9
+- [x] **DRIFT-01**: Automated detector scans all `@~/.claude/...` and `@$HOME/.claude/...` references in skills, agents, and references; flags any reference pointing at a file that doesn't exist in the plugin layout — **Phase 7 (satisfied 2026-04-21)**
+- [~] **DRIFT-02**: Drift detectors (file-layout, schema, namespace) run in CI and hard-fail on any detected drift — **Phase 7 portion satisfied 2026-04-21**; schema detector (Phase 8) and namespace detector (Phase 9) pending
 
 ### HANDOFF Schema Baseline and Drift Detection
 - [ ] **SCHEMA-01**: Committed `schema/handoff-v1.json` describes the 19-field HANDOFF.json contract with field types and required/optional status — Phase 8
@@ -51,8 +51,8 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DRIFT-01 | Phase 7 | Pending |
-| DRIFT-02 | Phases 7, 8, 9 | Pending |
+| DRIFT-01 | Phase 7 | Satisfied (2026-04-21, commits 63444dd + 777def6) |
+| DRIFT-02 | Phases 7, 8, 9 | Partial — Phase 7 portion satisfied (CI workflow 9450005 + skip-list fix 777def6); Phases 8, 9 pending |
 | SCHEMA-01 | Phase 8 | Pending |
 | SCHEMA-02 | Phase 8 | Pending |
 | SCHEMA-03 | Phase 8 | Pending (blocked on R-1) |
