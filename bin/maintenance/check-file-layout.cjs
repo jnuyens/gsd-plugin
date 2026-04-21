@@ -37,12 +37,17 @@ if (!fs.existsSync('.git') || !fs.existsSync('skills')) {
   process.exit(2);
 }
 
-// Skip list — same as rewrite-command-namespace.cjs (do not extract yet; Phase 9 unifies)
+// Skip list.
+// Note: this differs from bin/maintenance/rewrite-command-namespace.cjs intentionally.
+// That script rewrites command-name references inside planning prose (where the user
+// might type them), so it only skips historical archives. The file-layout detector's
+// concern is the PLUGIN'S file layout — planning docs are project paperwork, never
+// shipped. They can (and do) legitimately embed example dangling-ref strings as
+// regression-test inputs or documentation of past drift incidents, which would
+// otherwise pollute the scan. Skip all of .planning/ and _research/ wholesale.
 const skipDirs = [
   /^_research\//,
-  /^\.planning\/milestones\/v\d+\./,        // any archived milestone (v1.0-*, v1.1-phases/, v1.2-phases/, ...)
-  /^\.planning\/phases\/04-/,               // kept for reference; Phase 04 was moved to v1.1-phases/ above
-  /^\.planning\/quick\/2604(0[7-9]|1[0-8])-/, // pre-2026-04-19 quick tasks
+  /^\.planning\//,  // all planning artifacts (plans, summaries, research, quick tasks, archives)
 ];
 const textExt = /\.(md|json|cjs|js|ts|tsx|txt|yml|yaml|sh|html)$/i;
 
