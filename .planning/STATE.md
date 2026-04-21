@@ -99,6 +99,7 @@ None.
 | 260420-vfb | Hook commands fall back to newest cached plugin version when baked `${CLAUDE_PLUGIN_ROOT}` is pruned | 2026-04-20 | 7a80d47 | [260420-vfb-hook-version-fallback](./quick/260420-vfb-hook-version-fallback/) |
 | 260420-cns | Rewrite `/gsd-<skill>` → `/gsd:<skill>` across plugin content (273 replacements, 100 files) | 2026-04-20 | 5dfbbd2 | [260420-cns-command-colon-fix](./quick/260420-cns-command-colon-fix/) |
 | 260421-u38 | Upgrade gsd-plugin to upstream GSD 1.38.3 (plugin v2.38.3) and publish GitHub release | 2026-04-21 | 1c75799 | [260421-u38-upgrade-gsd-plugin-to-version-1-38-3-mat](./quick/260421-u38-upgrade-gsd-plugin-to-version-1-38-3-mat/) |
+| 260421-rnu | Reorganize README — new-user flow (install/use/update) first; upstream-user migration content consolidated at end | 2026-04-21 | 5b5efd5 | [260421-rnu-readme-new-user-reorg](./quick/260421-rnu-readme-new-user-reorg/) |
 
 ## Session Continuity
 
