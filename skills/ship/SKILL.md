@@ -17,10 +17,10 @@ Closes the plan → execute → verify → ship loop.
 </objective>
 
 <execution_context>
-@~/.claude/get-shit-done/workflows/ship.md
+@${CLAUDE_PLUGIN_ROOT}/workflows/ship.md
 </execution_context>
 
-Execute the ship workflow from @~/.claude/get-shit-done/workflows/ship.md end-to-end.
+Execute the ship workflow from @${CLAUDE_PLUGIN_ROOT}/workflows/ship.md end-to-end.
 
 <output_format>
 When the ship workflow concludes (PR created and tracked), emit a Next Up continuation block following the pattern in `references/continuation-format.md`:

@@ -10,6 +10,7 @@ A performance-optimized plugin packaging of [GSD](https://github.com/gsd-build/g
 
 - **81 slash commands** (`/gsd:*`) for project planning, execution, debugging, and verification
 - **21 agent definitions** for specialized workflow roles (planner, executor, researcher, verifier, etc.)
+- **78 workflow bodies** in `workflows/` — operational logic that skills delegate to via `@${CLAUDE_PLUGIN_ROOT}/workflows/<name>.md`
 - **MCP server** exposing project state as queryable resources and mutation tools
 - **Hooks** for session-start context loading, workflow enforcement, checkpoint on compact, and tool-use monitoring
 - **Auto-resume across `/compact`** -- PreCompact hook writes `.planning/HANDOFF.json`; on the next session, SessionStart auto-invokes `/gsd:resume-work` so Claude continues at the same phase/plan/task with zero manual intervention

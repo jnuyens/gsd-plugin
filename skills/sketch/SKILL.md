@@ -29,12 +29,12 @@ Does not require `/gsd:new-project` — auto-creates `.planning/sketches/` if ne
 </objective>
 
 <execution_context>
-@~/.claude/get-shit-done/workflows/sketch.md
-@~/.claude/get-shit-done/references/ui-brand.md
-@~/.claude/get-shit-done/references/sketch-theme-system.md
-@~/.claude/get-shit-done/references/sketch-interactivity.md
-@~/.claude/get-shit-done/references/sketch-tooling.md
-@~/.claude/get-shit-done/references/sketch-variant-patterns.md
+@${CLAUDE_PLUGIN_ROOT}/workflows/sketch.md
+@${CLAUDE_PLUGIN_ROOT}/references/ui-brand.md
+@${CLAUDE_PLUGIN_ROOT}/references/sketch-theme-system.md
+@${CLAUDE_PLUGIN_ROOT}/references/sketch-interactivity.md
+@${CLAUDE_PLUGIN_ROOT}/references/sketch-tooling.md
+@${CLAUDE_PLUGIN_ROOT}/references/sketch-variant-patterns.md
 </execution_context>
 
 <runtime_note>
@@ -49,6 +49,6 @@ Design idea: $ARGUMENTS
 </context>
 
 <process>
-Execute the sketch workflow from @~/.claude/get-shit-done/workflows/sketch.md end-to-end.
+Execute the sketch workflow from @${CLAUDE_PLUGIN_ROOT}/workflows/sketch.md end-to-end.
 Preserve all workflow gates (intake, decomposition, target stack research, variant evaluation, MANIFEST updates, commit patterns).
 </process>

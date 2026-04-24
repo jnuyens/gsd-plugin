@@ -16,8 +16,8 @@ Use when you know what you want but don't know which `/gsd-*` command to run.
 </objective>
 
 <execution_context>
-@~/.claude/get-shit-done/workflows/do.md
-@~/.claude/get-shit-done/references/ui-brand.md
+@${CLAUDE_PLUGIN_ROOT}/workflows/do.md
+@${CLAUDE_PLUGIN_ROOT}/references/ui-brand.md
 </execution_context>
 
 <context>
@@ -25,6 +25,6 @@ $ARGUMENTS
 </context>
 
 <process>
-Execute the do workflow from @~/.claude/get-shit-done/workflows/do.md end-to-end.
+Execute the do workflow from @${CLAUDE_PLUGIN_ROOT}/workflows/do.md end-to-end.
 Route user intent to the best GSD command and invoke it.
 </process>

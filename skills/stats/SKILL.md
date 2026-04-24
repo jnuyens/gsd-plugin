@@ -10,9 +10,9 @@ Display comprehensive project statistics including phase progress, plan executio
 </objective>
 
 <execution_context>
-@~/.claude/get-shit-done/workflows/stats.md
+@${CLAUDE_PLUGIN_ROOT}/workflows/stats.md
 </execution_context>
 
 <process>
-Execute the stats workflow from @~/.claude/get-shit-done/workflows/stats.md end-to-end.
+Execute the stats workflow from @${CLAUDE_PLUGIN_ROOT}/workflows/stats.md end-to-end.
 </process>

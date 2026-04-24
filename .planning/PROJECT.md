@@ -124,7 +124,7 @@ This document evolves at phase transitions and milestone boundaries.
 5. Update `plugins/gsd/` in [davepoon/buildwithclaude](https://github.com/davepoon/buildwithclaude) — bump version, sync agents and skills, update README
 
 **After each upstream GSD sync** (via `/gsd:quick`):
-1. Sync `bin/lib/*.cjs` (preserve local patches in core.cjs), `bin/gsd-tools.cjs` (preserve local patches), `references/`, `templates/`, `contexts/`
+1. Sync `bin/lib/*.cjs` (preserve local patches in core.cjs), `bin/gsd-tools.cjs` (preserve local patches), `get-shit-done/workflows/` → `workflows/` (full copy — these are the bodies referenced by `@${CLAUDE_PLUGIN_ROOT}/workflows/<name>.md` from skills), `references/`, `templates/`, `contexts/`
 2. Bump version in: `package.json`, `.claude-plugin/plugin.json`, `.claude-plugin/marketplace.json`
 3. **Update README.md**: bump "Based on" version line, update skill/agent counts, add/update feature descriptions for new upstream capabilities
 4. Update this file's Context section (`Based on [GSD x.y.z]`)
@@ -135,4 +135,4 @@ This document evolves at phase transitions and milestone boundaries.
 9. **Run `UPSTREAM_VERSION=v1.x.y node bin/maintenance/check-upstream-schema.cjs`** (use the just-synced version) — must exit 0 before declaring the sync complete. If upstream added fields, decide whether to absorb them into `schema/handoff-v1.json` as optional or bump to a `handoff-v2.json` alongside
 
 ---
-*Last updated: 2026-04-24 — v1.2 Upstream Resilience milestone complete and archived.*
+*Last updated: 2026-04-25 — shipped plugin-local `workflows/` dir + rewrote `@`-includes to `${CLAUDE_PLUGIN_ROOT}` form (closes Category B drift).*

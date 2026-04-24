@@ -18,8 +18,8 @@ Produces EVAL-REVIEW.md with score, verdict, gaps, and remediation plan.
 </objective>
 
 <execution_context>
-@~/.claude/get-shit-done/workflows/eval-review.md
-@~/.claude/get-shit-done/references/ai-evals.md
+@${CLAUDE_PLUGIN_ROOT}/workflows/eval-review.md
+@${CLAUDE_PLUGIN_ROOT}/references/ai-evals.md
 </execution_context>
 
 <context>
@@ -27,6 +27,6 @@ Phase: $ARGUMENTS — optional, defaults to last completed phase.
 </context>
 
 <process>
-Execute @~/.claude/get-shit-done/workflows/eval-review.md end-to-end.
+Execute @${CLAUDE_PLUGIN_ROOT}/workflows/eval-review.md end-to-end.
 Preserve all workflow gates.
 </process>

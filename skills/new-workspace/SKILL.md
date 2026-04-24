@@ -34,11 +34,11 @@ Create a physical workspace directory containing copies of specified git repos (
 </objective>
 
 <execution_context>
-@~/.claude/get-shit-done/workflows/new-workspace.md
-@~/.claude/get-shit-done/references/ui-brand.md
+@${CLAUDE_PLUGIN_ROOT}/workflows/new-workspace.md
+@${CLAUDE_PLUGIN_ROOT}/references/ui-brand.md
 </execution_context>
 
 <process>
-Execute the new-workspace workflow from @~/.claude/get-shit-done/workflows/new-workspace.md end-to-end.
+Execute the new-workspace workflow from @${CLAUDE_PLUGIN_ROOT}/workflows/new-workspace.md end-to-end.
 Preserve all workflow gates (validation, approvals, commits, routing).
 </process>

@@ -33,14 +33,14 @@ Initialize a new project through unified flow: questioning → research (optiona
 </objective>
 
 <execution_context>
-@~/.claude/get-shit-done/workflows/new-project.md
-@~/.claude/get-shit-done/references/questioning.md
-@~/.claude/get-shit-done/references/ui-brand.md
-@~/.claude/get-shit-done/templates/project.md
-@~/.claude/get-shit-done/templates/requirements.md
+@${CLAUDE_PLUGIN_ROOT}/workflows/new-project.md
+@${CLAUDE_PLUGIN_ROOT}/references/questioning.md
+@${CLAUDE_PLUGIN_ROOT}/references/ui-brand.md
+@${CLAUDE_PLUGIN_ROOT}/templates/project.md
+@${CLAUDE_PLUGIN_ROOT}/templates/requirements.md
 </execution_context>
 
 <process>
-Execute the new-project workflow from @~/.claude/get-shit-done/workflows/new-project.md end-to-end.
+Execute the new-project workflow from @${CLAUDE_PLUGIN_ROOT}/workflows/new-project.md end-to-end.
 Preserve all workflow gates (validation, approvals, commits, routing).
 </process>

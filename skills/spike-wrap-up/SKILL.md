@@ -17,8 +17,8 @@ project history. Output skill goes to `./.claude/skills/spike-findings-[project]
 </objective>
 
 <execution_context>
-@~/.claude/get-shit-done/workflows/spike-wrap-up.md
-@~/.claude/get-shit-done/references/ui-brand.md
+@${CLAUDE_PLUGIN_ROOT}/workflows/spike-wrap-up.md
+@${CLAUDE_PLUGIN_ROOT}/references/ui-brand.md
 </execution_context>
 
 <runtime_note>
@@ -26,6 +26,6 @@ project history. Output skill goes to `./.claude/skills/spike-findings-[project]
 </runtime_note>
 
 <process>
-Execute the spike-wrap-up workflow from @~/.claude/get-shit-done/workflows/spike-wrap-up.md end-to-end.
+Execute the spike-wrap-up workflow from @${CLAUDE_PLUGIN_ROOT}/workflows/spike-wrap-up.md end-to-end.
 Preserve all curation gates (per-spike review, grouping approval, CLAUDE.md routing line).
 </process>

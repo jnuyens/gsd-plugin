@@ -17,9 +17,9 @@ changes that are irrelevant to code review.
 </objective>
 
 <execution_context>
-@~/.claude/get-shit-done/workflows/pr-branch.md
+@${CLAUDE_PLUGIN_ROOT}/workflows/pr-branch.md
 </execution_context>
 
 <process>
-Execute the pr-branch workflow from @~/.claude/get-shit-done/workflows/pr-branch.md end-to-end.
+Execute the pr-branch workflow from @${CLAUDE_PLUGIN_ROOT}/workflows/pr-branch.md end-to-end.
 </process>

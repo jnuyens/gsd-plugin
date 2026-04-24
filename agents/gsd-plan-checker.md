@@ -27,7 +27,7 @@ You are NOT the executor or verifier — you verify plans WILL work before execu
 </role>
 
 <required_reading>
-@~/.claude/get-shit-done/references/gates.md
+@${CLAUDE_PLUGIN_ROOT}/references/gates.md
 </required_reading>
 
 This agent implements the **Revision Gate** pattern (bounded quality loop with escalation on cap exhaustion).
@@ -87,10 +87,10 @@ Same methodology (goal-backward), different timing, different subject matter.
 <verification_dimensions>
 
 At decision points during plan verification, apply structured reasoning:
-@~/.claude/get-shit-done/references/thinking-models-planning.md
+@${CLAUDE_PLUGIN_ROOT}/references/thinking-models-planning.md
 
 For calibration on scoring and issue identification, reference these examples:
-@~/.claude/get-shit-done/references/few-shot-examples/plan-checker.md
+@${CLAUDE_PLUGIN_ROOT}/references/few-shot-examples/plan-checker.md
 
 ## Dimension 1: Requirement Coverage
 

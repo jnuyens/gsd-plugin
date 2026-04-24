@@ -22,7 +22,7 @@ Output: updated VALIDATION.md + generated test files.
 </objective>
 
 <execution_context>
-@~/.claude/get-shit-done/workflows/validate-phase.md
+@${CLAUDE_PLUGIN_ROOT}/workflows/validate-phase.md
 </execution_context>
 
 <context>
@@ -30,6 +30,6 @@ Phase: $ARGUMENTS — optional, defaults to last completed phase.
 </context>
 
 <process>
-Execute @~/.claude/get-shit-done/workflows/validate-phase.md.
+Execute @${CLAUDE_PLUGIN_ROOT}/workflows/validate-phase.md.
 Preserve all workflow gates.
 </process>

@@ -51,10 +51,17 @@ const skipDirs = [
 ];
 const textExt = /\.(md|json|cjs|js|ts|tsx|txt|yml|yaml|sh|html)$/i;
 
-// Two forms of the dangling reference
+// Reference forms scanned. Three patterns:
+//   1. `@~/.claude/get-shit-done/<subpath>` — legacy non-plugin install path. Most refs in
+//      historical SKILL.md content. Dangle for plugin users (legacy dir absent).
+//   2. `@$HOME/.claude/get-shit-done/<subpath>` — alternate env-var form of the same.
+//   3. `@${CLAUDE_PLUGIN_ROOT}/<subpath>` — plugin-local form (added 2026-04-25). CC's plugin
+//      loader substitutes ${CLAUDE_PLUGIN_ROOT} for skill/agent content, so this resolves to
+//      the version-stamped install dir. Detector validates the <subpath> exists in plugin tree.
 const REF_PATTERNS = [
   /@[~]\/\.claude\/get-shit-done\/([^\s'"\\)]+)/g,
   /@\$HOME\/\.claude\/get-shit-done\/([^\s'"\\)]+)/g,
+  /@\$\{CLAUDE_PLUGIN_ROOT\}\/([^\s'"\\)]+)/g,
 ];
 
 // Normalize a captured subpath: strip trailing markdown punctuation (backticks, asterisks,

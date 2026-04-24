@@ -25,9 +25,9 @@ Flags:
 </objective>
 
 <execution_context>
-@~/.claude/get-shit-done/workflows/audit-fix.md
+@${CLAUDE_PLUGIN_ROOT}/workflows/audit-fix.md
 </execution_context>
 
 <process>
-Execute the audit-fix workflow from @~/.claude/get-shit-done/workflows/audit-fix.md end-to-end.
+Execute the audit-fix workflow from @${CLAUDE_PLUGIN_ROOT}/workflows/audit-fix.md end-to-end.
 </process>
