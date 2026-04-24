@@ -17,7 +17,7 @@ Rewrite was driven by the live skill registry (81 entries from `skills/gsd-*/` d
 
 ## Bug found and fixed mid-task
 
-Initial pattern lacked a leading boundary, so it also matched inside file-path contexts like `skills/gsd-resume-work/SKILL.md` and produced broken `skills/gsd:resume-work/SKILL.md` in 4 files (22 occurrences). Caught via a follow-up grep for `\b(skills|agents|...)/gsd:` pattern. Reverse-fixed in place via targeted regex. Verified zero path-damage remains.
+Initial pattern lacked a leading boundary, so it also matched inside file-path contexts like `skills/resume-work/SKILL.md` and produced broken `skills/gsd:resume-work/SKILL.md` in 4 files (22 occurrences). Caught via a follow-up grep for `\b(skills|agents|...)/gsd:` pattern. Reverse-fixed in place via targeted regex. Verified zero path-damage remains.
 
 ## Scope and exclusions
 

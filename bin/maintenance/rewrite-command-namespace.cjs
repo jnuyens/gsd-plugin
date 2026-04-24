@@ -14,10 +14,10 @@
  *   node bin/maintenance/rewrite-command-namespace.cjs           # apply
  *
  * Algorithm:
- *   1. Enumerate skill names from `skills/gsd-*` directories.
+ *   1. Enumerate skill names from `skills/<name>/SKILL.md` directories.
  *   2. Build regex with skill alternatives sorted longest-first. Use a
  *      negative lookbehind (?<![a-zA-Z0-9/]) so file-path contexts like
- *      `skills/gsd-resume-work/SKILL.md` are NOT rewritten — they're
+ *      `skills/resume-work/SKILL.md` are NOT rewritten — they're
  *      paths, not commands. A negative lookahead (?![a-z-]) blocks partial
  *      matches on longer skill names or adjacent hyphens.
  *   3. Walk `git ls-files`, apply to text files only, skip historical
@@ -42,13 +42,19 @@ if (!fs.existsSync(skillsDir)) {
   console.error('error: no skills/ directory found — run from repo root');
   process.exit(2);
 }
+// Skill dirs are now `skills/<name>/` (no `gsd-` prefix) since the 2026-04-24
+// rename that fixed the duplicated-prefix command-ID bug. Filter: any dir under
+// skills/ that contains a SKILL.md is a skill. Bundled TS artifacts in
+// skills/bundled/ + skills/*.ts are excluded by the SKILL.md-presence check.
 const skills = fs.readdirSync(skillsDir)
-  .filter(d => d.startsWith('gsd-') && fs.statSync(path.join(skillsDir, d)).isDirectory())
-  .map(d => d.replace(/^gsd-/, ''))
+  .filter(d => {
+    const full = path.join(skillsDir, d);
+    return fs.statSync(full).isDirectory() && fs.existsSync(path.join(full, 'SKILL.md'));
+  })
   .sort((a, b) => b.length - a.length);
 
 if (skills.length === 0) {
-  console.error('error: no skills/gsd-*/ directories found');
+  console.error('error: no skill directories found under skills/ (expected <name>/SKILL.md layout)');
   process.exit(2);
 }
 

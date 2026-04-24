@@ -117,7 +117,7 @@ Research performed inline from this repo's local state:
 1. `gh release download v1.38.1 --repo gsd-build/get-shit-done --archive=tar.gz` (already extracted at `/tmp/gsd-sync-1.38.1/`)
 2. `gh release download v1.38.3 --repo gsd-build/get-shit-done --archive=tar.gz` (already extracted at `/tmp/gsd-sync-1.38.3/`)
 3. Inspected `get-shit-done/workflows/pause-work.md` §`<step name="write_structured">` in both tarballs. Compared byte-wise via `diff`.
-4. Inspected `~/.claude/plugins/cache/gsd-plugin/gsd/1.37.1/skills/gsd-pause-work/SKILL.md` as a third data point (older plugin cache version pulled from upstream's 1.37.1).
+4. Inspected `~/.claude/plugins/cache/gsd-plugin/gsd/1.37.1/skills/pause-work/SKILL.md` as a third data point (older plugin cache version pulled from upstream's 1.37.1).
 5. Cross-checked against this plugin's `bin/lib/checkpoint.cjs` `generateCheckpoint` function to enumerate the current 19 fields.
 
 Cost: ~10 minutes. Well below the 30-minute estimate in the v1.2 kickoff.

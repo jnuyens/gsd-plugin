@@ -25,8 +25,8 @@ Full list from `diff -rq`:
 
 | File | Size (diff lines) | Relevance to plugin |
 |------|-------------------|---------------------|
-| `commands/gsd/sketch.md` | 25 | → `skills/gsd-sketch/SKILL.md` (SYNC) |
-| `commands/gsd/spike.md` | 31 | → `skills/gsd-spike/SKILL.md` (SYNC) |
+| `commands/gsd/sketch.md` | 25 | → `skills/sketch/SKILL.md` (SYNC) |
+| `commands/gsd/spike.md` | 31 | → `skills/spike/SKILL.md` (SYNC) |
 | `get-shit-done/workflows/sketch.md` | 184 | **Not in plugin layout; SKIP** — plugin has no `workflows/` dir; all `@~/.claude/get-shit-done/workflows/*` refs point at the legacy install path, not the plugin. This is drift that v1.2 Phase 7 will catch and flag. |
 | `get-shit-done/workflows/sketch-wrap-up.md` | 19 | Skip (same reason) |
 | `get-shit-done/workflows/spike.md` | 414 | Skip (same reason) |
@@ -35,8 +35,8 @@ Full list from `diff -rq`:
 
 ## Sync scope (narrow)
 
-1. Overwrite `skills/gsd-sketch/SKILL.md` with upstream 1.38.3's `commands/gsd/sketch.md` content
-2. Overwrite `skills/gsd-spike/SKILL.md` with upstream 1.38.3's `commands/gsd/spike.md` content
+1. Overwrite `skills/sketch/SKILL.md` with upstream 1.38.3's `commands/gsd/sketch.md` content
+2. Overwrite `skills/spike/SKILL.md` with upstream 1.38.3's `commands/gsd/spike.md` content
 3. Both files have NEW content:
    - Frontier mode (no argument or "frontier") that analyzes existing sketch/spike landscape
    - Additional tools in allowed-tools (WebSearch, WebFetch, context7)

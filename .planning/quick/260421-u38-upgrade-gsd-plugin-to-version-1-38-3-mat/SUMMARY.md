@@ -22,8 +22,8 @@ Plugin synced to upstream GSD 1.38.3, version bumped `2.38.2 → 2.38.3`, tagged
 ## What changed
 
 ### Ported from upstream 1.38.3
-- `skills/gsd-sketch/SKILL.md` — frontier mode; WebSearch/WebFetch/context7 in allowed-tools; updated description + argument hint
-- `skills/gsd-spike/SKILL.md` — same pattern (frontier mode + extended tools + updated description)
+- `skills/sketch/SKILL.md` — frontier mode; WebSearch/WebFetch/context7 in allowed-tools; updated description + argument hint
+- `skills/spike/SKILL.md` — same pattern (frontier mode + extended tools + updated description)
 
 ### Plugin-only fix
 - `bin/maintenance/rewrite-command-namespace.cjs` skip pattern generalized: `/^\.planning\/milestones\/v1\.0-/` → `/^\.planning\/milestones\/v\d+\./` so versioned milestone archives (v1.1-phases/, future v1.2-phases/) are preserved as-is on re-runs. **Bug surfaced by this sync:** the first run of the post-sync rewrite wrongly modified 9 files under `.planning/milestones/v1.1-phases/04-checkpoint-and-resume/` — historical archive. Reverted via `git checkout --` before committing; skip pattern fixed.

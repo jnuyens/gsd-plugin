@@ -5,7 +5,7 @@
  * PreCompact hook and the /gsd:pause-work skill call into this library so the
  * two code paths stay in sync.
  *
- * Schema matches skills/gsd-pause-work/SKILL.md (lines 89-121) plus the
+ * Schema matches skills/pause-work/SKILL.md (lines 89-121) plus the
  * `source` and `partial` extensions required by Phase 4 (D-01, D-04, D-11).
  *
  * Design constraints:
