@@ -8,6 +8,23 @@ History before 2.38.2 lives in git + the per-milestone archive (see `.planning/m
 
 ## [Unreleased]
 
+## [2.38.5] - 2026-04-25  (based on upstream GSD 1.38.3)
+
+Plugin-only patch — two follow-ups to v1.2's session-continuity work, plus an audit-doc fix.
+
+### Added
+- **PostToolUse periodic checkpoint** — bridges Claude Code's *microcompact* gap. CC has two compaction paths (verified in `_research/claude-code-internals/services/compact/`): full `compactConversation` (fires PreCompact → plugin checkpoints) and `microcompactMessages` (per-turn lossy GC of stale tool outputs; **does NOT fire PreCompact**, no event hookable). New `post-tool-use` handler in `bin/gsd-tools.cjs` writes a fresh `HANDOFF.json` after any file-mutating tool call (matcher: `Bash|Edit|Write|MultiEdit|NotebookEdit`), throttled by HANDOFF.json mtime to at most once per 60s. New `source: "auto-postool"` value in the schema enum. Net: `HANDOFF.json` is at most ~60s stale during an active session regardless of which compaction path ran (quick task `260425-mct`).
+- **`/clear` continuation hints surfaced at end-of-flow boundaries** — six terminal skills (`execute-phase`, `complete-milestone`, `verify-work`, `quick`, `plan-phase`, `ship`) now emit a `## ▶ Next Up` continuation block following `references/continuation-format.md` when the workflow concludes. Each block includes the standard `` `/clear` then [next-command] `` pattern plus a parenthetical explaining that `/clear` is safe (resume-work restores from HANDOFF.json since v1.1's session continuity work). Closes the dormant-template gap — `references/continuation-format.md` was rich but unused (quick task `260425-clr`).
+
+### Changed
+- **`bin/lib/checkpoint.cjs`** — `generateCheckpoint` accepts `auto-postool` as a third source value; status mapping treats both `auto-compact` and `auto-postool` as `auto-checkpoint`. Doc comment updated.
+- **`schema/handoff-v1.json`** — `source` enum extended from `["auto-compact", "manual-pause"]` to `["auto-compact", "manual-pause", "auto-postool"]` with a `$comment` describing each value.
+- **`hooks/hooks.json`** — PostToolUse matcher: `Bash` → `Bash|Edit|Write|MultiEdit|NotebookEdit`.
+- **`references/continuation-format.md`** — top-of-file safety footer documents that `/clear` is safe since v1.1's session-continuity work; gives the standard "/clear is safe" parenthetical wording as a single source of truth.
+
+### Fixed
+- **`.planning/AUDIT-v1.2.md` self-collision** — the v1.2 milestone audit's own "Plan self-collision" lesson contained a literal dash-form `/gsd-<real-skill-name>` example, tripping the namespace drift detector. Rephrased to a generic placeholder.
+
 ## [2.38.4] - 2026-04-24  (based on upstream GSD 1.38.3)
 
 v1.2 Upstream Resilience shipment. Full context in [milestones/v1.2-ROADMAP.md](.planning/milestones/v1.2-ROADMAP.md).
