@@ -34,3 +34,22 @@
 Full v1.1 details: [milestones/v1.1-ROADMAP.md](./milestones/v1.1-ROADMAP.md) · [requirements archive](./milestones/v1.1-REQUIREMENTS.md) · [audit](./AUDIT-v1.1.md)
 
 ---
+
+## v1.2 Upstream Resilience (Shipped: 2026-04-24)
+
+**Phases completed:** 3 phases (Phase 7 + Phase 8 + Phase 9), 3 plans + 14 tasks + 3 structurally related quick tasks, over 5 days (2026-04-20 → 2026-04-24). Zero phase/requirement deferrals — all 9 requirements satisfied by the phase that claimed them at kickoff.
+
+**Key accomplishments:**
+
+- Three-detector drift-catch in CI — file-layout, HANDOFF schema, and namespace drift each fail the build if regressed. Ratchet baselines let the plugin ship with known debt (e.g., 71 Category-B file-layout refs) while preventing further regressions.
+- `schema/handoff-v1.json` — committed JSON Schema draft-07 describing the 19-field HANDOFF contract (17 required upstream-compat fields + 2 optional plugin extensions). Research R-1 confirmed upstream schema is stable and plugin is a strict superset.
+- `bin/maintenance/check-drift.cjs` umbrella orchestrator — unifies file-layout + schema + namespace drift checks into one entry point for local dev + post-sync use. CI stays per-category for fast-feedback granularity.
+- `bin/maintenance/check-upstream-schema.cjs` post-sync detector — compares upstream `/gsd:pause-work` declared field list against our schema; catches upstream drift before it bites users.
+- First CI on the repo — `.github/workflows/check-drift.yml` with `file-layout` + `handoff-schema` jobs running in parallel.
+- `CHANGELOG.md` scaffold — Keep-a-Changelog format with plugin-vs-upstream version distinction in section headers.
+- README reorganized to put new-user flow (install → use → update → maintenance) first; upstream-user migration content consolidated in a trailing umbrella section (quick task 260421-rnu).
+- Skill directories renamed `skills/gsd-<name>/` → `skills/<name>/` (81 renames) — fixed a duplicated-prefix UX bug where tab completion inserted `/gsd:gsd-<skill>` instead of `/gsd:<skill>`. Also aligns plugin layout with upstream's `commands/gsd/<name>.md` structure (quick task 260424-srn).
+
+Full v1.2 details: [milestones/v1.2-ROADMAP.md](./milestones/v1.2-ROADMAP.md) · [requirements archive](./milestones/v1.2-REQUIREMENTS.md) · [audit](./AUDIT-v1.2.md)
+
+---
