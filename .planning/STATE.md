@@ -103,6 +103,7 @@ None.
 | 260421-rnu | Reorganize README — new-user flow (install/use/update) first; upstream-user migration content consolidated at end | 2026-04-21 | 5b5efd5 | [260421-rnu-readme-new-user-reorg](./quick/260421-rnu-readme-new-user-reorg/) |
 | 260424-srn | Rename `skills/gsd-<name>/` → `skills/<name>/` — fixes duplicated prefix in plugin command IDs (81 renames, 22 ref updates) | 2026-04-24 | b652f55 | [260424-srn-skill-dir-rename](./quick/260424-srn-skill-dir-rename/) |
 | 260425-mct | PostToolUse periodic checkpoint bridges Claude Code's microcompact gap (60s mtime throttle, source=auto-postool) | 2026-04-25 | 1c0ab2f | [260425-mct-postool-checkpoint](./quick/260425-mct-postool-checkpoint/) |
+| 260425-clr | Resurface `/clear` suggestions at end-of-flow boundaries (6 skills now emit Next Up continuation blocks; references/continuation-format.md was dormant) | 2026-04-25 | e0903f7 | [260425-clr-clear-suggestions](./quick/260425-clr-clear-suggestions/) |
 | 260421-rnu | Reorganize README — new-user flow (install/use/update) first; upstream-user migration content consolidated at end | 2026-04-21 | 5b5efd5 | [260421-rnu-readme-new-user-reorg](./quick/260421-rnu-readme-new-user-reorg/) |
 
 ## Session Continuity
