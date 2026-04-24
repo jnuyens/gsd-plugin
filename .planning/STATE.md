@@ -102,6 +102,7 @@ None.
 | 260421-u38 | Upgrade gsd-plugin to upstream GSD 1.38.3 (plugin v2.38.3) and publish GitHub release | 2026-04-21 | 1c75799 | [260421-u38-upgrade-gsd-plugin-to-version-1-38-3-mat](./quick/260421-u38-upgrade-gsd-plugin-to-version-1-38-3-mat/) |
 | 260421-rnu | Reorganize README — new-user flow (install/use/update) first; upstream-user migration content consolidated at end | 2026-04-21 | 5b5efd5 | [260421-rnu-readme-new-user-reorg](./quick/260421-rnu-readme-new-user-reorg/) |
 | 260424-srn | Rename `skills/gsd-<name>/` → `skills/<name>/` — fixes duplicated prefix in plugin command IDs (81 renames, 22 ref updates) | 2026-04-24 | b652f55 | [260424-srn-skill-dir-rename](./quick/260424-srn-skill-dir-rename/) |
+| 260425-mct | PostToolUse periodic checkpoint bridges Claude Code's microcompact gap (60s mtime throttle, source=auto-postool) | 2026-04-25 | 1c0ab2f | [260425-mct-postool-checkpoint](./quick/260425-mct-postool-checkpoint/) |
 | 260421-rnu | Reorganize README — new-user flow (install/use/update) first; upstream-user migration content consolidated at end | 2026-04-21 | 5b5efd5 | [260421-rnu-readme-new-user-reorg](./quick/260421-rnu-readme-new-user-reorg/) |
 
 ## Session Continuity
