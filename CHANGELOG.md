@@ -8,6 +8,23 @@ History before 2.38.2 lives in git + the per-milestone archive (see `.planning/m
 
 ## [Unreleased]
 
+## [2.38.6] - 2026-04-25  (based on upstream GSD 1.38.3)
+
+Plugin-only patch — closes the largest deferred drift category from v1.2 Phase 7.
+
+### Fixed
+- **Workflow `@`-includes now resolve.** Skills delegate to operational logic via `@`-include of workflow body files. Previously these used the legacy non-plugin install path (`@~/.claude/get-shit-done/workflows/<name>.md`), which doesn't exist for plugin users — visible to users as a "Falling back to legacy workflow file" graceful-degradation message and silently lost workflow content. v1.2's file-layout detector quantified the impact at 71 dangling refs (Category B) and explicitly deferred the fix as structural. This release ships the fix in two moves:
+  - **Plugin-local `workflows/` dir** — 78 workflow markdown files copied from upstream `get-shit-done/workflows/` into the plugin tree, namespace-rewritten to colon-form commands.
+  - **Path rewrite to `${CLAUDE_PLUGIN_ROOT}` form** — 270 `@`-include rewrites across 99 files: `@~/.claude/get-shit-done/<sub>` → `@${CLAUDE_PLUGIN_ROOT}/<sub>` for `workflows/`, `references/`, `templates/`, `contexts/`. Claude Code's plugin loader substitutes `${CLAUDE_PLUGIN_ROOT}` in skill/agent content (verified via `_research/claude-code-internals/utils/plugins/pluginOptionsStorage.ts`); at runtime the variable expands to the version-stamped install path so the include resolves to the real plugin file.
+
+  Net: **genuinely-missing dangling refs go from 71 → 0**. Skills now load their workflow bodies as intended (quick task `260425-wfd`).
+
+### Changed
+- **`bin/maintenance/check-file-layout.cjs`** detector extended with a third reference pattern for `@${CLAUDE_PLUGIN_ROOT}/<sub>` so the new plugin-local form is validated and future drift in it is caught.
+- **`tests/drift-baseline.json`** regenerated: was `109 / 38 / 71` (total / repairable / missing); now `122 / 122 / 0`. Total goes UP because the detector now catches the new resolvable refs; missing goes to ZERO.
+- **`.planning/PROJECT.md` "After each upstream GSD sync" checklist** step 1 now includes copying `get-shit-done/workflows/` into `workflows/` so future syncs keep workflow bodies in lockstep with upstream.
+- **`README.md` "What GSD Plugin provides"** lists the new `78 workflow bodies` entry.
+
 ## [2.38.5] - 2026-04-25  (based on upstream GSD 1.38.3)
 
 Plugin-only patch — two follow-ups to v1.2's session-continuity work, plus an audit-doc fix.
