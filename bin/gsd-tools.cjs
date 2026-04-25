@@ -1324,9 +1324,12 @@ async function runCommand(command, args, cwd, raw, defaultValue) {
         // Periodic checkpoint to bridge the microcompact gap.
         // CC's microcompact (services/compact/microCompact.ts) silently strips stale
         // tool outputs without firing PreCompact. This handler writes a fresh
-        // HANDOFF.json after file-mutating tool calls (matcher in hooks.json:
-        // Bash|Edit|Write|MultiEdit|NotebookEdit), throttled by HANDOFF.json mtime
-        // so we write at most once per 60s. Most-recent-wins via overwrite.
+        // HANDOFF.json after any tool call in the matcher (hooks.json:
+        // Bash|Edit|Write|MultiEdit|NotebookEdit + Read|Grep|Glob|WebFetch|WebSearch
+        // — broadened 2026-04-25 after a research-phase usage-cap incident showed
+        // the file-mutation-only matcher had an 18-min gap during read-heavy work).
+        // Throttled by HANDOFF.json mtime so we write at most once per 60s regardless
+        // of how often tools fire. Most-recent-wins via overwrite.
         // Never crashes — 3s budget on PostToolUse.
         try {
           const { planningPaths } = require('./lib/core.cjs');
